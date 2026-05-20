@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+._*
+
+# MATLAB
+*.asv
+*.m~*
+*.mat
+*.slxc
+slprj/
+codegen/
+
+# Data files (keep structure, ignore content)
+data/test_videos/*.mp4
+data/test_videos/*.avi
+data/test_videos/*.mov
+data/results/*.mp4
+data/results/*.avi
+data/results/*.mat
+data/results/*.csv
+HeartBeat/
+
+# IDE
+.vscode/
+.idea/
