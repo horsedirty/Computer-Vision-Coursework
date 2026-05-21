@@ -229,6 +229,9 @@ end
 | `src/evaluation/visualize_trajectory.m` | 角色八 | 累积轨迹对比图 |
 | `src/evaluation/visualize_frame_comparison.m` | 角色八 | 2×K 帧对比可视化 |
 | `src/evaluation/run_ablation_study.m` | 角色八 | 消融实验自动化 |
+| `src/app/stabilization_gui.mlapp` | 角色七 | App Designer 主界面（薄 GUI 层，编排三阶段流水线） |
+| `src/app/phase_worker.m` | 角色七 | parfeval 后台 Worker（串联模块一→二→三，DataQueue 通信） |
+| `src/app/trajectory_viewer.m` | 角色七 | 运动轨迹可视化子窗口（调用 visualize_trajectory） |
 | `src/utils/load_video.m` | 全体 | 视频加载（cell/array 双格式） |
 | `src/utils/save_video.m` | 全体 | 视频编码输出 |
 | `src/utils/timer_utils.m` | 全体 | 嵌套计时器类 (TimerStack) |

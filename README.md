@@ -39,6 +39,11 @@
 │   │   ├── visualize_frame_comparison.m   # 帧对比图
 │   │   └── run_ablation_study.m    # 消融实验自动化
 │   │
+│   ├── app/                        ← App Designer GUI（角色七）
+│   │   ├── stabilization_gui.mlapp # 主界面（可交互桌面应用）
+│   │   ├── phase_worker.m          # parfeval 后台处理 Worker
+│   │   └── trajectory_viewer.m     # 轨迹可视化子窗口
+│   │
 │   └── utils/                      ← 工具函数
 │       ├── load_video.m            # 视频加载
 │       ├── save_video.m            # 视频保存
@@ -63,12 +68,32 @@ init_project();
 
 % 2. 确认测试视频已放入 data/test_videos/
 
-% 3. 运行完整流水线
+% 3a. 命令行运行完整流水线
 main_pipeline(struct('inputVideo', 'data/test_videos/your_video.mp4'));
+
+% 3b. 或启动 App Designer 图形界面
+cd('app');
+stabilization_gui;
 
 % 4. 运行消融实验（多种参数组合自动对比）
 run_ablation_study('data/test_videos/your_video.mp4');
 ```
+
+## GUI 功能说明
+
+启动 `stabilization_gui` 后：
+
+| 功能 | 操作 |
+|------|------|
+| 加载视频 | 点击「加载视频」选择 .mp4/.avi 文件 |
+| 预览原始帧 | 左侧 UIAxes + 底部滑块拖动跳帧 |
+| 开始处理 | 点击「开始处理」触发三阶段流水线（parfeval 异步） |
+| 暂停/恢复 | 点击「暂停」暂停 Worker，再次点击恢复 |
+| 实时指标 | PSNR / SSIM / 帧率 / 延迟实时更新 |
+| 轨迹分析 | 处理中点击「轨迹分析」弹出运动轨迹子窗口 |
+| 导出结果 | 处理完成后点击「导出结果」保存 .mp4 |
+
+处理架构：**阶段一**（运动估计扫描）→ **阶段二**（批量平滑）→ **阶段三**（帧合成预览），parfeval 后台执行不阻塞 UI。
 
 ## 三阶段流水线架构
 
@@ -104,7 +129,7 @@ run_ablation_study('data/test_videos/your_video.mp4');
 | 角色四 | 仿射分解与运动分离 | `decompose_affine_params.m` `gaussian_smooth.m` |
 | 角色五 | 相对坐标马尔可夫平滑 | `relative_coordinate_model.m` `markov_window_smooth.m` |
 | 角色六 | 帧合成与去模糊 | `warp_frame.m` `estimate_blur_kernel.m` `wiener_deblur.m` |
-| 角色七 | MATLAB App Designer GUI | `.mlapp` 文件（待开发） |
+| 角色七 | MATLAB App Designer GUI | `stabilization_gui.mlapp` `phase_worker.m` `trajectory_viewer.m` |
 | 角色八 | 测试评估 | `evaluation/*.m` |
 
 ## 依赖的 MATLAB 工具箱
