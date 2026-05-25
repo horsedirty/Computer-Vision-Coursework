@@ -1,0 +1,5 @@
+# 忽略 .m 文件（MATLAB 代码），防止 clangd 误报
+If:
+  PathMatch: .*\.m
+Diagnostics:
+  Suppress: all
