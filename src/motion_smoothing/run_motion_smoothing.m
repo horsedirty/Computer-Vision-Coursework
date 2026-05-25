@@ -97,33 +97,99 @@ function [T_smoothed, paramHistory, diagnostics] = run_motion_smoothing(T_sequen
 end
 
 
-%% 辅助函数：6 参数序列 → 3×3×N 变换矩阵
+%% 局部函数：params_to_transforms —— 6 参数序列 → 3×3×N 仿射变换矩阵
+%
+% 仿射矩阵分解：A_2x2 = R(θ) · S(s) · H(shx, shy)
+%   其中 R = [cosθ  -sinθ;  sinθ  cosθ]   （旋转）
+%        S = [s  0;  0  s]                （均匀缩放）
+%        H = [1  shx;  shy  1]            （剪切）
+%
+% 合并得到：
+%   a = s · (cosθ - sinθ·shy)
+%   b = s · (cosθ·shx - sinθ)
+%   c = s · (sinθ + cosθ·shy)
+%   d = s · (sinθ·shx + cosθ)
+%
+% 参考论文 09_GlobalFlowNet 仿射分解思路
+%
 function T_seq = params_to_transforms(paramHistory, H, W)
+    arguments
+        paramHistory (:,6) double
+        H (1,1) double
+        W (1,1) double
+    end
+
     N = size(paramHistory, 1);
     T_seq = zeros(3, 3, N);
+
     for i = 1:N
         dx    = paramHistory(i, 1);
         dy    = paramHistory(i, 2);
         theta = paramHistory(i, 3);
-        s     = paramHistory(i, 4);
+        s     = max(paramHistory(i, 4), 1e-6);
         shx   = paramHistory(i, 5);
         shy   = paramHistory(i, 6);
 
-        % TODO: 从 6 参数合成 3×3 仿射矩阵
-        % 旋转+缩放矩阵: R = s * [cos(theta) -sin(theta); sin(theta) cos(theta)]
-        % 剪切矩阵:     SH = [1 shx; shy 1]
-        % 完整仿射:     A = R * SH
-        % T_seq(:,:,i) = [A(1,1) A(1,2) dx; A(2,1) A(2,2) dy; 0 0 1];
-
         cos_t = cos(theta);
         sin_t = sin(theta);
-        T_seq(:,:,i) = [s*cos_t, -s*sin_t + shx, dx;
-                        s*sin_t,  s*cos_t + shy, dy;
-                        0,        0,              1];
+
+        a = s * (cos_t - sin_t * shy);
+        b = s * (cos_t * shx - sin_t);
+        c = s * (sin_t + cos_t * shy);
+        d = s * (sin_t * shx + cos_t);
+
+        T_seq(:, :, i) = [a, b, dx;
+                          c, d, dy;
+                          0, 0,  1];
     end
 end
 
 
+%% 局部函数：relative_to_absolute —— 增量积分重建绝对参数
+%
+% 与 relative_coordinate_model.m 中的版本完全一致。
+% 作为局部函数内联以避免跨文件依赖。
+% 参考论文 17_中北大学 (MDPI 2025)
+%
+function paramAbsolute = relative_to_absolute(paramRelative, initAbsolute, params)
+    arguments
+        paramRelative (:,6) double
+        initAbsolute (1,6) double
+        params struct = struct()
+    end
+
+    if ~isfield(params, 'useLogScale'),  params.useLogScale = true; end
+
+    N = size(paramRelative, 1);
+    if N == 0
+        paramAbsolute = initAbsolute;
+        return;
+    end
+
+    paramAbsolute = zeros(N, 6);
+
+    paramAbsolute(:, 1) = initAbsolute(1) + cumsum(paramRelative(:, 1));
+    paramAbsolute(:, 2) = initAbsolute(2) + cumsum(paramRelative(:, 2));
+    paramAbsolute(:, 3) = initAbsolute(3) + cumsum(paramRelative(:, 3));
+
+    if params.useLogScale
+        paramAbsolute(1, 4) = initAbsolute(4);
+        for i = 2:N
+            paramAbsolute(i, 4) = paramAbsolute(i-1, 4) * exp(paramRelative(i, 4));
+        end
+    else
+        paramAbsolute(1, 4) = initAbsolute(4);
+        for i = 2:N
+            paramAbsolute(i, 4) = paramAbsolute(i-1, 4) + paramRelative(i, 4);
+        end
+    end
+
+    paramAbsolute(:, 5) = initAbsolute(5) + cumsum(paramRelative(:, 5));
+    paramAbsolute(:, 6) = initAbsolute(6) + cumsum(paramRelative(:, 6));
+end
+
+
+%% 局部函数：safeField —— 安全读取 struct 字段
 function val = safeField(s, fieldname, default)
     if isfield(s, fieldname)
         val = s.(fieldname);
