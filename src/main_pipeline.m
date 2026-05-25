@@ -119,6 +119,53 @@ function main_pipeline(params)
     end
 
     % ================================================================
+    % 场景聚合：按 scene_type 汇总各检测器内点率
+    % ================================================================
+    sceneAgg = struct();
+    for i = 2:N
+        if ~isfield(diag_motion{i}, 'scene_type'), continue; end
+        sceneType = diag_motion{i}.scene_type;
+        if ~isfield(sceneAgg, sceneType)
+            sceneAgg.(sceneType) = struct('count', 0);
+        end
+        sceneAgg.(sceneType).count = sceneAgg.(sceneType).count + 1;
+
+        if ~isfield(diag_motion{i}, 'per_detector_stats'), continue; end
+        pds = diag_motion{i}.per_detector_stats;
+        detNames = fieldnames(pds);
+        for d = 1:length(detNames)
+            detName = detNames{d};
+            if ~isfield(sceneAgg.(sceneType), detName)
+                sceneAgg.(sceneType).(detName) = struct('total', 0, 'inlier', 0);
+            end
+            sceneAgg.(sceneType).(detName).total = ...
+                sceneAgg.(sceneType).(detName).total + pds.(detName).total;
+            sceneAgg.(sceneType).(detName).inlier = ...
+                sceneAgg.(sceneType).(detName).inlier + pds.(detName).inlier;
+        end
+    end
+
+    if verbose
+        fprintf('\n[Pipeline] 各场景检测器内点率聚合:\n');
+        sceneTypes = fieldnames(sceneAgg);
+        for s = 1:length(sceneTypes)
+            st = sceneTypes{s};
+            fprintf('  [%s] %d帧\n', st, sceneAgg.(st).count);
+            detNames = fieldnames(sceneAgg.(st));
+            for d = 1:length(detNames)
+                if strcmp(detNames{d}, 'count'), continue; end
+                detName = detNames{d};
+                t = sceneAgg.(st).(detName).total;
+                il = sceneAgg.(st).(detName).inlier;
+                rate = il / max(t, 1);
+                fprintf('    %-8s total: %d, inlier: %d, rate: %.2f\n', ...
+                    detName, t, il, rate);
+            end
+        end
+        fprintf('\n');
+    end
+
+    % ================================================================
     % 第三步: 运动分解与平滑（模块二）
     %         输入 T_raw_seq，输出 T_smoothed_seq
     %         这一步是 BATCH 操作——整个序列的变换矩阵一次性处理
@@ -192,7 +239,7 @@ function main_pipeline(params)
         diagFile = [outputVideo(1:end-4) '_diag.mat'];
         save(diagFile, 'T_raw_seq', 'T_smoothed_seq', 'paramHistory', ...
             'diag_motion', 'diag_smooth', 'diag_synth', ...
-            'total_time_per_frame', 'synth_times', 'overall_fps');
+            'total_time_per_frame', 'synth_times', 'overall_fps', 'sceneAgg');
         fprintf('诊断数据: %s\n', diagFile);
     end
 end
