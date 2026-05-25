@@ -50,7 +50,7 @@ function [T, diagnostics] = run_motion_estimation(prevFrame, currFrame, params)
     % 步骤 1: 关键点检测（角色二）
     % ================================================================
     t1 = tic;
-    [prevKP, prevScores, ~, detectDiag1] = detect_keypoints(prevFrame, detect_params);
+    [prevKP, prevScores, prevDetMap, detectDiag1] = detect_keypoints(prevFrame, detect_params);
     [currKP, currScores, ~, detectDiag2] = detect_keypoints(currFrame, detect_params);
     detect_time = toc(t1);
 
@@ -106,6 +106,34 @@ function [T, diagnostics] = run_motion_estimation(prevFrame, currFrame, params)
     transform_time = toc(t5);
 
     % ================================================================
+    % 步骤 6a: 场景分类（角色二）
+    % ================================================================
+    nKeypoints = size(prevKP, 1);
+    sceneType = classify_scene(flow, nKeypoints, struct());
+
+    % ================================================================
+    % 步骤 6b: 各检测器内点率统计（角色二）
+    % ================================================================
+    perDetectorStats = struct();
+    if ~isempty(matchedPrev) && ~isempty(inlierIdx) && ~isempty(prevDetMap)
+        [~, idxInPrev] = ismember(matchedPrev, prevKP, 'rows');
+        validMatch = idxInPrev > 0;
+        idxInPrev = idxInPrev(validMatch);
+        inlierIdx = inlierIdx(validMatch);
+        matchedDetectors = prevDetMap(idxInPrev);
+        uniqueDets = unique(matchedDetectors);
+        for d = 1:length(uniqueDets)
+            detName = uniqueDets{d};
+            detMask = strcmp(matchedDetectors, detName);
+            nTotal = sum(detMask);
+            nInlier = sum(inlierIdx(detMask));
+            perDetectorStats.(detName) = struct(...
+                'total', nTotal, 'inlier', nInlier, ...
+                'inlierRate', nInlier / max(nTotal, 1));
+        end
+    end
+
+    % ================================================================
     % 汇总诊断信息
     % ================================================================
     total_time = toc(t_total);
@@ -120,6 +148,8 @@ function [T, diagnostics] = run_motion_estimation(prevFrame, currFrame, params)
         'keypoint_count',     [size(prevKP,1), size(currKP,1)], ...
         'match_count',        size(matchedPrev, 1), ...
         'inlier_ratio',       transformDiag.inlierRatio, ...
+        'scene_type',         sceneType, ...
+        'per_detector_stats', perDetectorStats, ...
         'detect_details',     {detectDiag1, detectDiag2}, ...
         'match_details',      matchDiag, ...
         'flow_details',       flowDiag, ...
