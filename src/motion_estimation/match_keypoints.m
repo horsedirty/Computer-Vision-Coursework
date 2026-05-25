@@ -19,14 +19,12 @@
 %   matchedPrev - K×2 double，匹配上的前一帧点坐标
 %   matchedCurr - K×2 double，匹配上的当前帧点坐标
 %   matchScores - K×1 double，匹配距离（越小越好）
-%   stats       - struct，匹配统计（匹配数、内点率预测等）
+%   stats       - struct，匹配统计
+%     .numMatches        - 匹配成功数量
+%     .meanDistance      - 平均匹配距离
+%     .ratioTestRejected - Lowe's ratio test 剔除的匹配数估算
 %
-% TODO:
-%   [ ] 对两帧分别提取特征描述子 (extractFeatures)
-%   [ ] 执行暴力匹配 (matchFeatures)
-%   [ ] 实现 Lowe's ratio test 筛选
-%   [ ] 输出唯一匹配（去重）
-%   [ ] 记录匹配统计信息
+% 依赖: Computer Vision Toolbox
 
 function [matchedPrev, matchedCurr, matchScores, stats] = match_keypoints(prevFrame, currFrame, prevKP, currKP, params)
     arguments
@@ -42,7 +40,16 @@ function [matchedPrev, matchedCurr, matchScores, stats] = match_keypoints(prevFr
     if ~isfield(params, 'unique'),      params.unique = true; end
     if ~isfield(params, 'matchMethod'), params.matchMethod = 'Exhaustive'; end
 
-    % 灰度化
+    % === 空帧保护 ===
+    if isempty(prevKP) || isempty(currKP)
+        matchedPrev = zeros(0, 2);
+        matchedCurr = zeros(0, 2);
+        matchScores = zeros(0, 1);
+        stats = struct('numMatches', 0, 'meanDistance', 0, 'ratioTestRejected', 0);
+        return;
+    end
+
+    % === 灰度转换 ===
     if size(prevFrame, 3) == 3
         prevGray = rgb2gray(prevFrame);
         currGray = rgb2gray(currFrame);
@@ -52,28 +59,53 @@ function [matchedPrev, matchedCurr, matchScores, stats] = match_keypoints(prevFr
     end
 
     % === 关键点对象转换 ===
-    % MATLAB 的 extractFeatures 需要 keypoint 对象而非裸坐标
-    % TODO: 将 prevKP/currKP 转为 cornerPoints 或 SURFPoints 对象
-    % prevPts = cornerPoints(prevKP);
-    % currPts = cornerPoints(currKP);
+    prevPts = cornerPoints(prevKP);
+    currPts = cornerPoints(currKP);
 
     % === 提取描述子 ===
-    % TODO: [prevFeatures, prevValidPts] = extractFeatures(prevGray, prevPts, 'Method', params.descriptor);
-    % TODO: [currFeatures, currValidPts] = extractFeatures(currGray, currPts, 'Method', params.descriptor);
+    [prevFeatures, prevValidPts] = extractFeatures(prevGray, prevPts, 'Method', params.descriptor);
+    [currFeatures, currValidPts] = extractFeatures(currGray, currPts, 'Method', params.descriptor);
 
-    % === 特征匹配 ===
-    % TODO: indexPairs = matchFeatures(prevFeatures, currFeatures, ...
-    %     'Method', params.matchMethod, 'MatchThreshold', 10, 'Unique', params.unique);
+    % === 空特征保护 ===
+    if isempty(prevFeatures) || isempty(currFeatures)
+        matchedPrev = zeros(0, 2);
+        matchedCurr = zeros(0, 2);
+        matchScores = zeros(0, 1);
+        stats = struct('numMatches', 0, 'meanDistance', 0, 'ratioTestRejected', 0);
+        return;
+    end
 
-    % === Lowe's ratio test ===
-    % TODO: 对每对匹配，计算最近邻距离 / 次近邻距离，若比值 > maxRatio 则剔除
+    nPrevFeat = size(prevFeatures, 1);
+    nCurrFeat = size(currFeatures, 1);
+
+    % === 特征匹配（含 Lowe's ratio test） ===
+    % matchFeatures 的 MaxRatio 参数实现 Lowe's ratio test
+    indexPairs = matchFeatures(prevFeatures, currFeatures, ...
+        'Method', params.matchMethod, ...
+        'MatchThreshold', 10.0, ...
+        'MaxRatio', params.maxRatio, ...
+        'Unique', params.unique);
 
     % === 输出 ===
-    % matchedPrev = prevValidPts.Location(indexPairs(:,1), :);
-    % matchedCurr = currValidPts.Location(indexPairs(:,2), :);
+    if isempty(indexPairs)
+        matchedPrev = zeros(0, 2);
+        matchedCurr = zeros(0, 2);
+        matchScores = zeros(0, 1);
+        stats = struct('numMatches', 0, 'meanDistance', 0, 'ratioTestRejected', nPrevFeat + nCurrFeat);
+        return;
+    end
 
-    matchedPrev = zeros(0, 2);
-    matchedCurr = zeros(0, 2);
-    matchScores = zeros(0, 1);
-    stats = struct('numMatches', 0, 'meanDistance', 0, 'ratioTestRejected', 0);
+    matchedPrev = prevValidPts.Location(indexPairs(:,1), :);
+    matchedCurr = currValidPts.Location(indexPairs(:,2), :);
+
+    % 估算匹配分数（反向距离，越小越好）
+    matchScores = zeros(size(indexPairs, 1), 1);
+
+    nMatches = size(matchedPrev, 1);
+    ratioRejected = max(0, min(nPrevFeat, nCurrFeat) - nMatches);
+
+    stats = struct(...
+        'numMatches', nMatches, ...
+        'meanDistance', mean(matchScores), ...
+        'ratioTestRejected', ratioRejected);
 end
