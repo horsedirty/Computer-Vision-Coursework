@@ -77,10 +77,15 @@ function [T, diagnostics] = run_motion_estimation(prevFrame, currFrame, params)
 
     % ================================================================
     % 步骤 4: 稀疏光流融合（角色三）
+    % 参考论文 14_LightStab (CVPR 2026) 第 3.1 节
     % ================================================================
     t4 = tic;
     if use_sparse_fusion && ~isempty(matchedPrev) && ~isempty(flow)
-        [~, ~, fuseDiag] = fuse_motion_field(flow, matchedPrev, matchedCurr, [H, W], fuse_params);
+        [fusedFlow, ~, fuseDiag] = fuse_motion_field(flow, matchedPrev, matchedCurr, [H, W], fuse_params);
+        if ~isempty(fusedFlow) && isfield(fusedFlow, 'Vx') && nnz(fusedFlow.Vx) > 0
+            transform_params.fusedFlowVx = fusedFlow.Vx;
+            transform_params.fusedFlowVy = fusedFlow.Vy;
+        end
     else
         fuseDiag = struct('status', 'skipped');
     end
