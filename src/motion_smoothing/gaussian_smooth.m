@@ -2,26 +2,26 @@
 % 编码规范：参见项目根目录 AGENTS.md
 % 角色四 & 五协作实现
 %
-% 功能：对绝对坐标下的仿射参数序列做低通滤波。
+% 功能：对仿射参数序列做低通滤波，实现三种基线平滑方法。
 % 这是消融实验中的 baseline 方案——效果不如马尔可夫平滑，但实现简单，
 % 用来证明相对坐标 + 窗口约束带来的增益。
 %
-% 三种实现方式（通过 params.method 切换）：
-%   1. 'gaussian'     - 手动高斯卷积（类比 imgaussfilt 的一维版）
-%   2. 'butterworth'  - Butterworth IIR 零相位低通滤波（butter + filtfilt）
-%   3. 'smoothdata'   - 直接调用 MATLAB 内置 smoothdata（最简单）
+% 三种方法：
+%   1. 'gaussian'    - 手动 1D 高斯卷积（与外积 imgaussfilt 等效，不依赖额外 toolbox）
+%   2. 'butterworth'  - Butterworth IIR 零相位滤波（'butter' + 'filtfilt'）
+%   3. 'smoothdata'   - MATLAB 内置 smoothdata（最简单，但控制粒度最粗）
 %
-% 消融实验中的角色：
-%   - 纯高斯滤波（gaussian_absolute）：对绝对参数直接平滑 → baseline
-%   - 相对坐标高斯（gaussian_relative）：abs→rel→高斯→abs，无窗口约束
-%   - 相对坐标马尔可夫（markov）：完整版，有窗口约束 → 最佳方案
+% 为什么在高斯平滑前先做参数分解？
+%   直接平滑 3×3 变换矩阵的 9 个元素会破坏仿射约束（如正交性）。
+%   在 6 参数域内对各参数独立平滑，能保持变换矩阵的物理可解释性。
+%   代价：各参数独立滤波忽略了参数间的耦合关系（此为消融实验验证点）。
 %
 % INPUT:
-%   paramAbsolute - N×6 double，绝对坐标仿射参数序列
-%   params        - struct
-%     .sigma         - 高斯核标准差（帧），默认 5
+%   paramSequence - N×6，仿射参数序列（绝对域或相对域均可）
+%   params        - 参数字典
 %     .method        - 'gaussian' | 'butterworth' | 'smoothdata'，默认 'gaussian'
-%     .cutoff_order  - Butterworth 滤波器阶数，默认 4（仅 method='butterworth'）
+%     .sigma         - 平滑强度（帧），默认 5
+%     .cutoff_order  - Butterworth 滤波器阶数（仅 method='butterworth'），默认 4
 %     .cutoff_freq   - Butterworth 归一化截止频率 (0~1)，默认 0.05
 %                      0 < cutoff_freq < 1，1 = Nyquist = 0.5 cycles/frame
 %
@@ -29,81 +29,84 @@
 %   paramSmoothed - N×6 double，平滑后参数序列
 %   diagnostics   - struct
 %     .method             - 使用的平滑方法
-%     .sigma              - 高斯核标准差
-%     .var_reduction_ratio - 平滑前后方差衰减比（< 1，越小平滑越强）
+%     .sigma              - 平滑强度
+%     .var_reduction_ratio - 各参数平滑前后方差比 [1×6] 或 整体平滑前后方差衰减比
 %     .smooth_time_ms     - 平滑耗时 (ms)
+%
+% 注意：此函数不区分在线/离线模式（高斯平滑天然非因果，默认零相位）。
+%       若需因果要求，使用 gaussian_causal 局部函数（仅使用过去帧）。
 %
 % 依赖：MATLAB Signal Processing Toolbox (butter, filtfilt) — 仅 method='butterworth'
 %
 % 参考论文：17_中北大学 (MDPI 2025) — baseline 对比
+%
+% TODO:
+%   [x] 实现高斯卷积（conv + gaussian kernel）
+%   [x] 实现 MATLAB smoothdata 调用
+%   [x] 实现 Butterworth IIR 滤波器
 
-function [paramSmoothed, diagnostics] = gaussian_smooth(paramAbsolute, params)
+function [paramSmoothed, diagnostics] = gaussian_smooth(paramSequence, params)
     arguments
-        paramAbsolute (:,6) double
+        paramSequence (:,6) double
         params struct = struct()
     end
 
-    if ~isfield(params, 'sigma'),        params.sigma = 5; end
     if ~isfield(params, 'method'),       params.method = 'gaussian'; end
+    if ~isfield(params, 'sigma'),        params.sigma = 5; end
     if ~isfield(params, 'cutoff_order'), params.cutoff_order = 4; end
     if ~isfield(params, 'cutoff_freq'),  params.cutoff_freq = 0.05; end
+    if ~isfield(params, 'causal'),       params.causal = false; end
 
-    N = size(paramAbsolute, 1);
+    N = size(paramSequence, 1);
     if N < 2
-        paramSmoothed = paramAbsolute;
+        paramSmoothed = paramSequence;
         diagnostics = struct('method', params.method, 'sigma', params.sigma, ...
-            'var_reduction_ratio', 1.0, 'smooth_time_ms', 0);
+            'var_reduction_ratio', 1.0, 'smooth_time_ms', 0, 'causal', params.causal);
         return;
     end
 
     t_start = tic;
-    paramSmoothed = zeros(N, 6);
+    sigma = params.sigma;
 
     switch params.method
         case 'gaussian'
-            % 手动一维高斯卷积：构造高斯核并对每列独立卷积
-            % 核半径 = 3*sigma（覆盖 99.7% 的高斯权重）
-            sigma = params.sigma;
-            halfW = ceil(3 * max(sigma, 0.5));
-            x = (-halfW:halfW)';
-            gaussKernel = exp(-x.^2 / (2 * sigma^2));
-            gaussKernel = gaussKernel / sum(gaussKernel);
-
-            for j = 1:6
-                paramSmoothed(:, j) = convWithBoundary(paramAbsolute(:, j), gaussKernel);
+            kernel = gaussian_kernel_1d(sigma);
+            if params.causal
+                paramSmoothed = gaussian_causal(paramSequence, kernel);
+            else
+                paramSmoothed = zeros(N, 6);
+                for j = 1:6
+                    paramSmoothed(:,j) = convWithBoundary(paramSequence(:,j), kernel);
+                end
             end
 
         case 'butterworth'
-            % Butterworth IIR 零相位低通滤波
-            % 参考论文 17 的频域分析思路：截止频率分离高低频
             cutoffOrder = params.cutoff_order;
             cutoffFreq  = params.cutoff_freq;
 
             if cutoffFreq <= 0 || cutoffFreq >= 1
                 error('Butterworth cutoff_freq 必须在 (0, 1) 范围内');
             end
-
+            
             [b, a] = butter(cutoffOrder, cutoffFreq, 'low');
-
+            paramSmoothed = zeros(N, 6);
             for j = 1:6
-                paramSmoothed(:, j) = filtfilt(b, a, paramAbsolute(:, j));
+                paramSmoothed(:,j) = filtfilt(b, a, paramSequence(:,j));
             end
 
         case 'smoothdata'
-            % 直接调用 MATLAB 内置 smoothdata
-            sigma = params.sigma;
+            paramSmoothed = zeros(N, 6);
             for j = 1:6
-                paramSmoothed(:, j) = smoothdata(paramAbsolute(:, j), 'gaussian', sigma);
+                paramSmoothed(:,j) = smoothdata(paramSequence(:,j), 'gaussian', sigma);
             end
 
         otherwise
-            error('不支持的平滑方法: %s', params.method);
+            error('不支持的平滑方法: %s。可选: gaussian | butterworth | smoothdata', params.method);
     end
 
     smoothTime = toc(t_start);
 
-    % 方差衰减比
-    varBefore = mean(var(paramAbsolute, 0, 1));
+    varBefore = mean(var(paramSequence, 0, 1));
     varAfter  = mean(var(paramSmoothed, 0, 1));
     if varBefore > 1e-10
         varReduction = varAfter / varBefore;
@@ -115,7 +118,8 @@ function [paramSmoothed, diagnostics] = gaussian_smooth(paramAbsolute, params)
         'method',              params.method, ...
         'sigma',               params.sigma, ...
         'var_reduction_ratio', varReduction, ...
-        'smooth_time_ms',      smoothTime * 1000);
+        'smooth_time_ms',      smoothTime * 1000, ...
+        'causal',              params.causal);
 end
 
 
@@ -181,11 +185,11 @@ function [] = self_test()
             p = struct('method', method, 'sigma', 5, 'cutoff_freq', 0.1);
             [smoothed, diag] = gaussian_smooth(paramAbs, p);
             fprintf('  %-14s 方差衰减: %.4f  耗时: %.2f ms\n', ...
-                method, diag.var_reduction_ratio, diag.smooth_time_ms);
+                method, mean(diag.var_reduction_ratio), diag.smooth_time_ms);
             assert(all(~isnan(smoothed(:))), sprintf('%s 输出包含 NaN', method));
             assert(all(~isinf(smoothed(:))), sprintf('%s 输出包含 Inf', method));
-            assert(diag.var_reduction_ratio < 0.95, ...
-                sprintf('%s 方差衰减不足: %.4f', method, diag.var_reduction_ratio));
+            assert(mean(diag.var_reduction_ratio) < 0.95, ...
+                sprintf('%s 方差衰减不足: %.4f', method, mean(diag.var_reduction_ratio)));
         catch ME
             fprintf('  %-14s 跳过（可能缺少 Signal Processing Toolbox）: %s\n', method, ME.message);
         end
@@ -193,3 +197,47 @@ function [] = self_test()
 
     fprintf('  自测通过 ✓\n');
 end
+
+
+function kernel = gaussian_kernel_1d(sigma)
+    halfW = ceil(3 * sigma);
+    x = (-halfW:halfW)';
+    kernel = exp(-x.^2 / (2 * sigma^2));
+    kernel = kernel / sum(kernel);
+end
+
+
+function paramSmoothed = gaussian_causal(paramSequence, kernel)
+    N = size(paramSequence, 1);
+    paramSmoothed = zeros(N, 6);
+    halfW = (length(kernel) - 1) / 2;
+    for i = 1:N
+        idxLeft  = max(1, i - halfW);
+        idxRight = i;
+        winLen = idxRight - idxLeft + 1;
+        causalKernel = kernel(end-winLen+1:end);
+        causalKernel = causalKernel / sum(causalKernel);
+        for j = 1:6
+            paramSmoothed(i,j) = causalKernel' * paramSequence(idxLeft:idxRight, j);
+        end
+    end
+end
+
+
+%% 自测
+% 验证三种方法均能降低噪声方差
+% fprintf('=== gaussian_smooth 自测 ===\n');
+% N_test = 200;
+% t = (1:N_test)';
+% clean = 10 * sin(0.05 * t) + 0.02 * t;
+% noisy = clean + 3 * randn(N_test, 1);
+% data = [noisy, zeros(N_test, 5)];
+%
+% methods = {'gaussian', 'butterworth', 'smoothdata'};
+% for m = 1:3
+%     [smoothed, diag] = gaussian_smooth(data, struct('method', methods{m}, 'sigma', 5));
+%     rr = diag.var_reduction_ratio(1);
+%     fprintf('  %-12s: 方差衰减比 = %.3f (期望 < 1, 越小平滑越强)\n', methods{m}, rr);
+%     assert(rr < 0.99, '%s 未实现有效降噪, 方差衰减比=%.3f', methods{m}, rr);
+% end
+% fprintf('gaussian_smooth 自测通过\n\n');
