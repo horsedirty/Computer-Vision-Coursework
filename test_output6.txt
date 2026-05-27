@@ -1,0 +1,1219 @@
+=== Quick Test Starting ===
+   2026-05-26 19:44:24
+
+=== Starting Quick Test ===
+=== 项目: 视频运动防抖与画面去模糊 ===
+项目根目录: F:\computer vision\test\Computer-Vision-Coursework
+MATLAB 版本: 25.2.0.2998904 (R2025b)
+  [✓] Computer Vision Toolbox (VideoReader, detectSIFTFeatures, opticalFlowFarneback)
+  [✓] Image Processing Toolbox (imwarp, deconvwnr, fspecial)
+  [✓] Parallel Computing Toolbox (parfeval, parfor（可选，用于加速）)
+  [✓] Deep Learning Toolbox (importONNXNetwork（可选，用于轻量去模糊网络）)
+
+路径已设置。运行 main_pipeline 开始处理。
+快速测试: cd('F:\computer vision\test\Computer-Vision-Coursework\src'); main_pipeline(struct('inputVideo', 'your_video.mp4'));
+[Pipeline] 加载视频: ..\data\test_videos\test1.mp4
+[Pipeline] 总帧数: 287, 处理帧数: 287, 帧率: 30.00 fps
+[Pipeline] 阶段一: 运动估计...
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+  帧 50/287 | 内点率: 0.99 | 耗时: 1.0 ms
+  帧 1.412615e+03/[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+  帧 100/287 | 内点率: 1.00 | 耗时: 1.0 ms
+  帧 1.454554e+03/[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 139 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 
+[警告: 检测到并删除了重复的数据点 - 已计算对应值的平均值。] 
+[> 位置：fuse_motion_field (第 141 行)
+位置: run_motion_estimation (第 92 行)
+位置: main_pipeline (第 103 行)
+位置: run_quick_test (第 10 行)] 

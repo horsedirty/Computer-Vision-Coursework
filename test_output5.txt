@@ -1,0 +1,17 @@
+=== Quick Test Starting ===
+   2026-05-26 19:51:40
+
+=== Starting Quick Test ===
+=== 项目: 视频运动防抖与画面去模糊 ===
+项目根目录: F:\computer vision\test\Computer-Vision-Coursework
+MATLAB 版本: 25.2.0.2998904 (R2025b)
+  [✓] Computer Vision Toolbox (VideoReader, detectSIFTFeatures, opticalFlowFarneback)
+  [✓] Image Processing Toolbox (imwarp, deconvwnr, fspecial)
+  [✓] Parallel Computing Toolbox (parfeval, parfor（可选，用于加速）)
+  [✓] Deep Learning Toolbox (importONNXNetwork（可选，用于轻量去模糊网络）)
+
+路径已设置。运行 main_pipeline 开始处理。
+快速测试: cd('F:\computer vision\test\Computer-Vision-Coursework\src'); main_pipeline(struct('inputVideo', 'your_video.mp4'));
+[Pipeline] 加载视频: ..\data\test_videos\test1.mp4
+[Pipeline] 总帧数: 287, 处理帧数: 287, 帧率: 30.00 fps
+[Pipeline] 阶段一: 运动估计...
