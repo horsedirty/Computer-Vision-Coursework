@@ -39,12 +39,16 @@
 
 function [stabilizedFrame, cropRect, diagnostics] = run_frame_synthesis(rawFrame, T_smoothed, T_raw, frameIndex, params)
     arguments
-        rawFrame (:,:,:) uint8
+        rawFrame uint8
         T_smoothed (3,3) double
         T_raw (3,3) double
         frameIndex (1,1) double
         params struct = struct()
     end
+
+    % 手动维度验证（支持灰度和彩色帧）
+    assert(ismatrix(rawFrame) || ndims(rawFrame) == 3, ...
+        'rawFrame 必须是 2D（灰度）或 3D（彩色）uint8 矩阵');
 
     t_total = tic;
 

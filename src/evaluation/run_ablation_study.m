@@ -61,17 +61,48 @@ function [resultsTable, allResults] = run_ablation_study(inputVideo, params)
         try
             main_pipeline(expParams);
 
-            % TODO: 从诊断文件加载结果并计算指标
-            % diagFile = [expParams.outputVideo(1:end-4) '_diag.mat'];
-            % load(diagFile, 'T_raw_seq', 'T_smoothed_seq', 'diag_motion', 'diag_smooth', 'diag_synth', 'total_time_per_frame', 'synth_times');
-            %
-            % [psnrVals(e), ~, ssimVals(e), ~, ~] = compute_psnr_ssim(...);
-            % [srVals(e), ~, ~, ~] = compute_stabilization_ratio(T_raw_seq, T_smoothed_seq);
-            % N = size(T_raw_seq, 3);
-            % fpsVals(e) = N / sum(total_time_per_frame(2:end) + synth_times(2:end));
-            % motionTime(e) = mean(cellfun(@(d) d.total_time_ms, diag_motion(2:end)));
-            % smoothTime(e) = diag_smooth.total_time_ms / N;
-            % synthTime(e)  = mean(cellfun(@(d) d.total_time_ms, diag_synth));
+            % 从诊断文件加载结果并计算指标
+            diagFile = [expParams.outputVideo(1:end-4) '_diag.mat'];
+            if exist(diagFile, 'file')
+                load(diagFile, 'T_raw_seq', 'T_smoothed_seq', 'diag_motion', ...
+                    'diag_smooth', 'diag_synth', 'total_time_per_frame', ...
+                    'synth_times', 'overall_fps');
+
+                N = size(T_raw_seq, 3);
+
+                % --- 读取原始帧（仅前N帧） ---
+                framesRaw = load_video(inputVideo, struct('maxFrames', N, 'outputFormat', 'array'));
+                % --- 读取稳定后帧 ---
+                framesStab = load_video(expParams.outputVideo, struct('maxFrames', N, 'outputFormat', 'array'));
+
+                % --- PSNR & SSIM（帧间模式，衡量稳定后时序一致性） ---
+                [psnrVals(e), ~, ssimVals(e), ~] = compute_psnr_ssim(framesStab, struct('mode', 'interframe'));
+
+                % --- 稳定比 SR ---
+                [srVals(e), ~, ~] = compute_stabilization_ratio(T_raw_seq, T_smoothed_seq, struct());
+
+                % --- FPS ---
+                if N > 1
+                    fpsVals(e) = overall_fps;
+                else
+                    fpsVals(e) = NaN;
+                end
+
+                % --- 模块耗时拆解 (ms) ---
+                if iscell(diag_motion) && numel(diag_motion) > 1
+                    motionTime(e) = mean(cellfun(@(d) d.total_time_ms, diag_motion(2:end)));
+                end
+                if isfield(diag_smooth, 'total_time_ms')
+                    smoothTime(e) = diag_smooth.total_time_ms / max(N-1, 1);
+                end
+                if iscell(diag_synth) && numel(diag_synth) > 1
+                    synthTime(e) = mean(cellfun(@(d) d.warp_time_ms, diag_synth(2:end)));
+                end
+            else
+                warning('诊断文件不存在: %s', diagFile);
+                psnrVals(e) = NaN; ssimVals(e) = NaN; srVals(e) = NaN;
+                fpsVals(e) = NaN; motionTime(e) = NaN; smoothTime(e) = NaN; synthTime(e) = NaN;
+            end
 
         catch ME
             fprintf('  [警告] 实验失败: %s\n', ME.message);
@@ -88,8 +119,8 @@ function [resultsTable, allResults] = run_ablation_study(inputVideo, params)
     % === 汇总为 Table ===
     resultsTable = table(expNames, psnrVals, ssimVals, srVals, fpsVals, ...
         motionTime, smoothTime, synthTime, ...
-        'VariableNames', {'实验条件', 'PSNR_dB', 'SSIM', 'SR', 'FPS', ...
-                          '运动估计_ms', '平滑_ms', '帧合成_ms'});
+        'VariableNames', {'Experiment', 'PSNR_dB', 'SSIM', 'SR', 'FPS', ...
+                         'MotionEst_ms', 'Smoothing_ms', 'Synthesis_ms'});
 
     % === 展示 ===
     disp(resultsTable);
@@ -174,8 +205,15 @@ function expParams = build_pipeline_params(inputVideo, ablation)
     % 模块一参数
     expParams.motion_params = struct();
     expParams.motion_params.detect_params = struct();
-    % TODO: 根据 ablation.detect_method 设置
-    % expParams.motion_params.use_sparse_fusion = ...
+    % 检测器选择：根据 detect_method 设置 use_sparse_fusion
+    if contains(ablation.detect_method, 'SURF')
+        expParams.motion_params.use_sparse_fusion = true;
+    else
+        expParams.motion_params.use_sparse_fusion = false;
+    end
+
+    % 将检测方法字符串传递给运动估计模块
+    expParams.motion_params.detect_method = ablation.detect_method;
 
     % 模块二参数
     expParams.smooth_params = struct();

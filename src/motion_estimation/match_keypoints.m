@@ -1,30 +1,30 @@
-%% match_keypoints.m —— 关键点匹配
-% 编码规范：参见项目根目录 AGENTS.md
-% 角色二负责实现
+%% match_keypoints.m —— Keypoint Matching
+% Coding standard: See project root AGENTS.md
+% Implemented by Role 2
 %
-% 功能：在连续两帧的关键点集合之间做特征描述子提取与匹配
+% Function: Extract feature descriptors and match between keypoint sets of two consecutive frames
 %
 % INPUT:
-%   prevFrame   - 前一帧，uint8 H×W×3 或 H×W
-%   currFrame   - 当前帧，uint8 H×W×3 或 H×W
-%   prevKP      - 前一帧关键点坐标 M×2
-%   currKP      - 当前帧关键点坐标 N×2
-%   params      - 参数字典
-%     .descriptor     - 描述子类型，'SIFT' | 'SURF' | 'FREAK'，默认 'SIFT'
-%     .matchMethod    - 匹配方法，'Exhaustive' | 'Approximate'，默认 'Exhaustive'
-%     .maxRatio       - Lowe's ratio test 阈值，默认 0.6
-%     .unique         - 是否保留唯一匹配，默认 true
+%   prevFrame   - Previous frame, uint8 H×W×3 or H×W
+%   currFrame   - Current frame, uint8 H×W×3 or H×W
+%   prevKP      - Previous frame keypoint coordinates M×2
+%   currKP      - Current frame keypoint coordinates N×2
+%   params      - Parameter dictionary
+%     .descriptor     - Descriptor type, 'SIFT' | 'SURF' | 'FREAK', default 'SIFT'
+%     .matchMethod    - Matching method, 'Exhaustive' | 'Approximate', default 'Exhaustive'
+%     .maxRatio       - Lowe's ratio test threshold, default 0.6
+%     .unique         - Whether to retain unique matches, default true
 %
 % OUTPUT:
-%   matchedPrev - K×2 double，匹配上的前一帧点坐标
-%   matchedCurr - K×2 double，匹配上的当前帧点坐标
-%   matchScores - K×1 double，匹配距离（越小越好）
-%   stats       - struct，匹配统计
-%     .numMatches        - 匹配成功数量
-%     .meanDistance      - 平均匹配距离
-%     .ratioTestRejected - Lowe's ratio test 剔除的匹配数估算
+%   matchedPrev - K×2 double, matched previous frame point coordinates
+%   matchedCurr - K×2 double, matched current frame point coordinates
+%   matchScores - K×1 double, matching distance (smaller is better)
+%   stats       - struct, matching statistics
+%     .numMatches        - Number of successful matches
+%     .meanDistance      - Average matching distance
+%     .ratioTestRejected - Estimated number of matches rejected by Lowe's ratio test
 %
-% 依赖: Computer Vision Toolbox
+% Dependency: Computer Vision Toolbox
 
 function [matchedPrev, matchedCurr, matchScores, stats] = match_keypoints(prevFrame, currFrame, prevKP, currKP, params)
     arguments
@@ -40,7 +40,7 @@ function [matchedPrev, matchedCurr, matchScores, stats] = match_keypoints(prevFr
     if ~isfield(params, 'unique'),      params.unique = true; end
     if ~isfield(params, 'matchMethod'), params.matchMethod = 'Exhaustive'; end
 
-    % === 空帧保护 ===
+    % === Empty frame protection ===
     if isempty(prevKP) || isempty(currKP)
         matchedPrev = zeros(0, 2);
         matchedCurr = zeros(0, 2);
@@ -49,7 +49,7 @@ function [matchedPrev, matchedCurr, matchScores, stats] = match_keypoints(prevFr
         return;
     end
 
-    % === 灰度转换 ===
+    % === Grayscale conversion ===
     if size(prevFrame, 3) == 3
         prevGray = rgb2gray(prevFrame);
         currGray = rgb2gray(currFrame);
@@ -58,15 +58,21 @@ function [matchedPrev, matchedCurr, matchScores, stats] = match_keypoints(prevFr
         currGray = currFrame;
     end
 
-    % === 关键点对象转换 ===
-    prevPts = cornerPoints(prevKP);
-    currPts = cornerPoints(currKP);
+    % === Keypoint object conversion ===
+    % SIFT descriptor requires SIFTPoints, other descriptors use cornerPoints
+    if strcmpi(params.descriptor, 'SIFT')
+        prevPts = SIFTPoints(prevKP);
+        currPts = SIFTPoints(currKP);
+    else
+        prevPts = cornerPoints(prevKP);
+        currPts = cornerPoints(currKP);
+    end
 
-    % === 提取描述子 ===
+    % === Extract descriptors ===
     [prevFeatures, prevValidPts] = extractFeatures(prevGray, prevPts, 'Method', params.descriptor);
     [currFeatures, currValidPts] = extractFeatures(currGray, currPts, 'Method', params.descriptor);
 
-    % === 空特征保护 ===
+    % === Empty feature protection ===
     if isempty(prevFeatures) || isempty(currFeatures)
         matchedPrev = zeros(0, 2);
         matchedCurr = zeros(0, 2);
@@ -78,15 +84,15 @@ function [matchedPrev, matchedCurr, matchScores, stats] = match_keypoints(prevFr
     nPrevFeat = size(prevFeatures, 1);
     nCurrFeat = size(currFeatures, 1);
 
-    % === 特征匹配（含 Lowe's ratio test） ===
-    % matchFeatures 的 MaxRatio 参数实现 Lowe's ratio test
+    % === Feature matching (with Lowe's ratio test) ===
+    % MaxRatio parameter in matchFeatures implements Lowe's ratio test
     indexPairs = matchFeatures(prevFeatures, currFeatures, ...
         'Method', params.matchMethod, ...
         'MatchThreshold', 10.0, ...
         'MaxRatio', params.maxRatio, ...
         'Unique', params.unique);
 
-    % === 输出 ===
+    % === Output ===
     if isempty(indexPairs)
         matchedPrev = zeros(0, 2);
         matchedCurr = zeros(0, 2);
@@ -98,7 +104,7 @@ function [matchedPrev, matchedCurr, matchScores, stats] = match_keypoints(prevFr
     matchedPrev = prevValidPts.Location(indexPairs(:,1), :);
     matchedCurr = currValidPts.Location(indexPairs(:,2), :);
 
-    % 估算匹配分数（反向距离，越小越好）
+    % Estimate match scores (inverse distance, smaller is better)
     matchScores = zeros(size(indexPairs, 1), 1);
 
     nMatches = size(matchedPrev, 1);

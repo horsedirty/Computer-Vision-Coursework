@@ -1,20 +1,20 @@
-%% gaussian_smooth.m —— 基线高斯平滑
-% 编码规范：参见项目根目录 AGENTS.md
-% 角色四 & 五协作实现
+%% gaussian_smooth.m —— Baseline Gaussian Smoothing
+% Coding standards: See AGENTS.md in project root
+% Role 4 & 5 collaborative implementation
 %
-% 功能：对仿射参数序列做低通滤波，实现三种基线平滑方法。
-% 这是消融实验中的 baseline 方案——效果不如马尔可夫平滑，但实现简单，
-% 用来证明相对坐标 + 窗口约束带来的增益。
+% Function: Low-pass filter affine parameter sequences, implementing three baseline smoothing methods.
+% This is the baseline scheme in the ablation study — less effective than Markov smoothing, but simpler to implement,
+% used to demonstrate the gains from relative coordinates + window constraints.
 %
-% 三种方法：
-%   1. 'gaussian'    - 手动 1D 高斯卷积（与外积 imgaussfilt 等效，不依赖额外 toolbox）
-%   2. 'butterworth'  - Butterworth IIR 零相位滤波（'butter' + 'filtfilt'）
-%   3. 'smoothdata'   - MATLAB 内置 smoothdata（最简单，但控制粒度最粗）
+% Three methods:
+%   1. 'gaussian'    - Manual 1D Gaussian convolution (equivalent to imgaussfilt, no extra toolbox dependency)
+%   2. 'butterworth'  - Butterworth IIR zero-phase filtering ('butter' + 'filtfilt')
+%   3. 'smoothdata'   - MATLAB built-in smoothdata (simplest, but coarsest control granularity)
 %
-% 为什么在高斯平滑前先做参数分解？
-%   直接平滑 3×3 变换矩阵的 9 个元素会破坏仿射约束（如正交性）。
-%   在 6 参数域内对各参数独立平滑，能保持变换矩阵的物理可解释性。
-%   代价：各参数独立滤波忽略了参数间的耦合关系（此为消融实验验证点）。
+% Why decompose parameters before Gaussian smoothing?
+%   Directly smoothing the 9 elements of a 3×3 transformation matrix would break affine constraints (e.g., orthogonality).
+%   Smoothing each parameter independently in the 6-parameter domain preserves the physical interpretability of the transformation matrix.
+%   Cost: Independent filtering of each parameter ignores inter-parameter coupling (this is the ablation study validation point).
 %
 % INPUT:
 %   paramSequence - N×6，仿射参数序列（绝对域或相对域均可）
@@ -85,7 +85,7 @@ function [paramSmoothed, diagnostics] = gaussian_smooth(paramSequence, params)
             cutoffFreq  = params.cutoff_freq;
 
             if cutoffFreq <= 0 || cutoffFreq >= 1
-                error('Butterworth cutoff_freq 必须在 (0, 1) 范围内');
+                error('Butterworth cutoff_freq must be within (0, 1) range');
             end
             
             [b, a] = butter(cutoffOrder, cutoffFreq, 'low');
@@ -101,7 +101,7 @@ function [paramSmoothed, diagnostics] = gaussian_smooth(paramSequence, params)
             end
 
         otherwise
-            error('不支持的平滑方法: %s。可选: gaussian | butterworth | smoothdata', params.method);
+            error('Unsupported smoothing method: %s. Options: gaussian | butterworth | smoothdata', params.method);
     end
 
     smoothTime = toc(t_start);
@@ -124,11 +124,11 @@ end
 
 
 % =========================================================================
-%% 局部函数：convWithBoundary —— 边界感知的一维卷积
+%% Local function: convWithBoundary —— Boundary-aware 1D convolution
 %
-% 用指定核对信号做卷积，边界处使用可用部分的归一化核。
-% 比 conv(x, kernel, 'same') 更好的地方：边界处核重新归一化，
-% 避免信号两端被"压低"（conv 的 'same' 在边界处核不完整导致幅值衰减）
+% Convolve a signal with a specified kernel, using a normalized kernel of available portion at boundaries.
+% Better than conv(x, kernel, 'same'): kernel is re-normalized at boundaries,
+% preventing signal ends from being "suppressed" (conv's 'same' causes amplitude decay at boundaries due to incomplete kernel coverage)
 % =========================================================================
 
 function y = convWithBoundary(x, kernel)
@@ -157,15 +157,15 @@ end
 
 
 % =========================================================================
-%% 自测
-% 验证三种平滑方法的正确性：
-%   1. 方差衰减：平滑后方差应显著降低
-%   2. 形状保真：低频正弦的趋势应被保留
-%   3. 无 NaN/Inf：所有输出应有效
+%% Self-test
+% Verify correctness of three smoothing methods:
+%   1. Variance reduction: variance should decrease significantly after smoothing
+%   2. Shape fidelity: low-frequency sinusoidal trend should be preserved
+%   3. No NaN/Inf: all outputs should be valid
 % =========================================================================
 
 function [] = self_test()
-    fprintf('=== gaussian_smooth 自测 ===\n');
+    fprintf('=== gaussian_smooth self-test ===\n');
 
     N = 100;
     t = (1:N)';
@@ -184,18 +184,18 @@ function [] = self_test()
         try
             p = struct('method', method, 'sigma', 5, 'cutoff_freq', 0.1);
             [smoothed, diag] = gaussian_smooth(paramAbs, p);
-            fprintf('  %-14s 方差衰减: %.4f  耗时: %.2f ms\n', ...
+            fprintf('  %-14s variance reduction: %.4f  time: %.2f ms\n', ...
                 method, mean(diag.var_reduction_ratio), diag.smooth_time_ms);
-            assert(all(~isnan(smoothed(:))), sprintf('%s 输出包含 NaN', method));
-            assert(all(~isinf(smoothed(:))), sprintf('%s 输出包含 Inf', method));
+            assert(all(~isnan(smoothed(:))), sprintf('%s output contains NaN', method));
+            assert(all(~isinf(smoothed(:))), sprintf('%s output contains Inf', method));
             assert(mean(diag.var_reduction_ratio) < 0.95, ...
-                sprintf('%s 方差衰减不足: %.4f', method, mean(diag.var_reduction_ratio)));
+                sprintf('%s insufficient variance reduction: %.4f', method, mean(diag.var_reduction_ratio)));
         catch ME
-            fprintf('  %-14s 跳过（可能缺少 Signal Processing Toolbox）: %s\n', method, ME.message);
+            fprintf('  %-14s skipped (possibly missing Signal Processing Toolbox): %s\n', method, ME.message);
         end
     end
 
-    fprintf('  自测通过 ✓\n');
+    fprintf('  self-test passed ✓\n');
 end
 
 

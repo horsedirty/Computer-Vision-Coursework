@@ -1,24 +1,24 @@
-%% timer_utils.m —— 计时工具
-% 编码规范：参见项目根目录 AGENTS.md
-% 通用工具，所有角色共用
+%% timer_utils.m —— Timing Utility
+% Coding standard: See project root AGENTS.md
+% Common utility, shared by all roles
 %
-% 功能：提供便捷的嵌套计时接口，用于统计各模块各阶段的耗时。
+% Function: Provides a convenient nested timing interface for measuring elapsed time of each module and stage.
 %
-% 使用示例：
+% Usage example:
 %   tm = TimerStack('main');
 %   tm.tic('motion');
-%   % ... 运动估计代码 ...
+%   % ... motion estimation code ...
 %   tm.toc('motion');
 %   tm.tic('smooth');
-%   % ... 平滑代码 ...
+%   % ... smoothing code ...
 %   tm.toc('smooth');
-%   tm.report();  % 打印所有计时
+%   tm.report();  % Print all timing
 
 classdef TimerStack < handle
     properties
         name
         stacks      % containers.Map: label → [start_time, elapsed]
-        active      % 当前活跃的计时 label 堆栈
+        active      % Currently active timing label stack
     end
 
     methods
@@ -29,26 +29,26 @@ classdef TimerStack < handle
         end
 
         function tic(obj, label)
-            % 开始计时
+            % Start timing
             obj.active{end+1} = label;
             obj.stacks(label) = tic;
         end
 
         function elapsed = toc(obj, label)
-            % 结束计时，返回耗时（秒）
+            % End timing, returns elapsed time (seconds)
             if ~obj.stacks.isKey(label)
-                warning('TimerStack: 未找到计时标签 "%s"', label);
+                warning('TimerStack: Timing label "%s" not found', label);
                 elapsed = 0;
                 return;
             end
             startTime = obj.stacks(label);
             elapsed = toc(startTime);
-            obj.stacks(label) = elapsed;  % 存储耗时而非 tic 句柄
+            obj.stacks(label) = elapsed;  % Store elapsed time instead of tic handle
         end
 
         function report(obj)
-            % 打印所有计时结果
-            fprintf('=== 计时报告 [%s] ===\n', obj.name);
+            % Print all timing results
+            fprintf('=== Timing Report [%s] ===\n', obj.name);
             keys_list = keys(obj.stacks);
             total = 0;
             for i = 1:numel(keys_list)
@@ -63,7 +63,7 @@ classdef TimerStack < handle
         end
 
         function s = toStruct(obj)
-            % 导出为 struct
+            % Export as struct
             s = struct();
             keys_list = keys(obj.stacks);
             for i = 1:numel(keys_list)

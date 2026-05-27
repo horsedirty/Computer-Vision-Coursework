@@ -52,7 +52,7 @@ function [sceneType, diagnostics] = classify_scene(flow, nKeypoints, params)
     end
 
     % === 从 flow 对象中提取幅度 ===
-    if isempty(flow) || ~isvalid(flow)
+    if isempty(flow)
         % 光流为空时默认返回静态
         sceneType = 'static';
         diagnostics = struct(...

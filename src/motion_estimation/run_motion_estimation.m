@@ -29,10 +29,16 @@
 
 function [T, diagnostics] = run_motion_estimation(prevFrame, currFrame, params)
     arguments
-        prevFrame (:,:,:) uint8
-        currFrame (:,:,:) uint8
+        prevFrame uint8
+        currFrame uint8
         params struct = struct()
     end
+
+    % 手动维度验证（支持灰度和彩色帧）
+    assert(ismatrix(prevFrame) || ndims(prevFrame) == 3, ...
+        'prevFrame 必须是 2D（灰度）或 3D（彩色）uint8 矩阵');
+    assert(ismatrix(currFrame) || ndims(currFrame) == 3, ...
+        'currFrame 必须是 2D（灰度）或 3D（彩色）uint8 矩阵');
 
     t_total = tic;
     H = size(currFrame, 1);
@@ -46,25 +52,7 @@ function [T, diagnostics] = run_motion_estimation(prevFrame, currFrame, params)
     transform_params = safeField(params, 'transform_params', struct());
     use_sparse_fusion = safeField(params, 'use_sparse_fusion', true);
 
-    % ================================================================
-    % 步骤 1: 关键点检测（角色二）
-    % ================================================================
-    t1 = tic;
-    [prevKP, prevScores, prevDetMap, detectDiag1] = detect_keypoints(prevFrame, detect_params);
-    [currKP, currScores, ~, detectDiag2] = detect_keypoints(currFrame, detect_params);
-    detect_time = toc(t1);
-
-    % ================================================================
-    % 步骤 2: 关键点匹配（角色二）
-    % ================================================================
-    t2 = tic;
-    [matchedPrev, matchedCurr, ~, matchDiag] = match_keypoints(prevFrame, currFrame, prevKP, currKP, match_params);
-    match_time = toc(t2);
-
-    % ================================================================
-    % 步骤 3: 稠密光流（角色三）
-    % ================================================================
-    t3 = tic;
+    % 灰度转换：detect_keypoints 和 match_keypoints 要求2D灰度图
     if size(prevFrame, 3) == 3
         prevGray = rgb2gray(prevFrame);
         currGray = rgb2gray(currFrame);
@@ -72,6 +60,26 @@ function [T, diagnostics] = run_motion_estimation(prevFrame, currFrame, params)
         prevGray = prevFrame;
         currGray = currFrame;
     end
+
+    % ================================================================
+    % 步骤 1: 关键点检测（角色二）
+    % ================================================================
+    t1 = tic;
+    [prevKP, prevScores, prevDetMap, detectDiag1] = detect_keypoints(prevGray, detect_params);
+    [currKP, currScores, ~, detectDiag2] = detect_keypoints(currGray, detect_params);
+    detect_time = toc(t1);
+
+    % ================================================================
+    % 步骤 2: 关键点匹配（角色二）
+    % ================================================================
+    t2 = tic;
+    [matchedPrev, matchedCurr, ~, matchDiag] = match_keypoints(prevGray, currGray, prevKP, currKP, match_params);
+    match_time = toc(t2);
+
+    % ================================================================
+    % 步骤 3: 稠密光流（角色三）
+    % ================================================================
+    t3 = tic;
     [flow, flowDiag] = compute_optical_flow(prevGray, currGray, flow_params);
     flow_time = toc(t3);
 
@@ -166,3 +174,4 @@ function val = safeField(s, fieldname, default)
         val = default;
     end
 end
+

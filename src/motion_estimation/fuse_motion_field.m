@@ -135,6 +135,19 @@ function [fusedFlow, mask, diagnostics] = fuse_motion_field(flow, matchedPrev, m
         Hc = length(YqCoarse);
         Wc = length(XqCoarse);
 
+        % 去重：scatteredInterpolant 不允许重复坐标点，先对重复点求平均
+        [~, ia, ~] = unique(matchedPrev_f, 'rows', 'stable');
+        if length(ia) < size(matchedPrev_f, 1)
+            % 存在重复点，用 accumarray 对位移值取平均
+            [uniqPts, ~, ic] = unique(matchedPrev_f, 'rows', 'stable');
+            nUniq = size(uniqPts, 1);
+            avg_dx = accumarray(ic, disp_x_f, [nUniq, 1], @mean);
+            avg_dy = accumarray(ic, disp_y_f, [nUniq, 1], @mean);
+            matchedPrev_f = uniqPts;
+            disp_x_f = avg_dx;
+            disp_y_f = avg_dy;
+        end
+
         try
             Fx = scatteredInterpolant(matchedPrev_f(:,1), matchedPrev_f(:,2), disp_x_f, ...
                 params.interp_method, 'nearest');

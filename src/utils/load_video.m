@@ -1,20 +1,20 @@
-%% load_video.m —— 视频加载工具
-% 编码规范：参见项目根目录 AGENTS.md
-% 通用工具，所有角色共用
+%% load_video.m —— Video Loading Utility
+% Coding standard: See project root AGENTS.md
+% Common utility, shared by all roles
 %
-% 功能：读取视频文件，返回帧序列（cell array 或 4D array）
+% Function: Read video file, return frame sequence (cell array or 4D array)
 %
 % INPUT:
-%   videoPath   - 视频文件路径
-%   params      - 参数字典
-%     .startFrame  - 起始帧，默认 1
-%     .maxFrames   - 最大帧数，默认 Inf
-%     .asGrayscale  - 是否转灰度，默认 false
-%     .outputFormat - 'cell' | 'array'，默认 'cell'
+%   videoPath   - Video file path
+%   params      - Parameter dictionary
+%     .startFrame  - Start frame, default 1
+%     .maxFrames   - Max frames, default Inf
+%     .asGrayscale  - Whether to convert to grayscale, default false
+%     .outputFormat - 'cell' | 'array', default 'cell'
 %
 % OUTPUT:
-%   frames      - cell array 或 H×W×C×N array
-%   metadata    - struct，含 NumFrames, FrameRate, Width, Height, Duration
+%   frames      - cell array or H×W×C×N array
+%   metadata    - struct, contains NumFrames, FrameRate, Width, Height, Duration
 
 function [frames, metadata] = load_video(videoPath, params)
     arguments
@@ -28,7 +28,7 @@ function [frames, metadata] = load_video(videoPath, params)
     if ~isfield(params, 'outputFormat'), params.outputFormat = 'cell'; end
 
     if ~exist(videoPath, 'file')
-        error('视频文件不存在: %s', videoPath);
+        error('Video file not found: %s', videoPath);
     end
 
     v = VideoReader(videoPath);
@@ -40,7 +40,7 @@ function [frames, metadata] = load_video(videoPath, params)
         N = min(params.maxFrames, N_total - params.startFrame + 1);
     end
 
-    fprintf('[load_video] %s: %d×%d, %d 帧, %.1f fps\n', ...
+    fprintf('[load_video] %s: %d×%d, %d frames, %.1f fps\n', ...
         videoPath, v.Width, v.Height, N, v.FrameRate);
 
     metadata = struct('NumFrames', N, 'FrameRate', v.FrameRate, ...
@@ -58,7 +58,7 @@ function [frames, metadata] = load_video(videoPath, params)
             end
 
         case 'array'
-            % 预分配 4D 数组（注意：内存占用可能很大）
+            % Preallocate 4D array (note: memory usage may be large)
             firstFrame = read(v, params.startFrame);
             if params.asGrayscale && size(firstFrame, 3) == 3
                 firstFrame = rgb2gray(firstFrame);
@@ -75,6 +75,6 @@ function [frames, metadata] = load_video(videoPath, params)
             end
 
         otherwise
-            error('不支持输出格式: %s', params.outputFormat);
+            error('Unsupported output format: %s', params.outputFormat);
     end
 end

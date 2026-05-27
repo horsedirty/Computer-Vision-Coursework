@@ -28,10 +28,14 @@
 
 function [warpedFrame, cropRect, diagnostics] = warp_frame(rawFrame, T, params)
     arguments
-        rawFrame (:,:,:) uint8
+        rawFrame uint8
         T (3,3) double
         params struct = struct()
     end
+
+    % 手动维度验证（支持灰度和彩色帧）
+    assert(ismatrix(rawFrame) || ndims(rawFrame) == 3, ...
+        'rawFrame 必须是 2D（灰度）或 3D（彩色）uint8 矩阵');
 
     cropEnabled  = safeField(params, 'cropEnabled', true);
     outputSize   = safeField(params, 'outputSize', []);
