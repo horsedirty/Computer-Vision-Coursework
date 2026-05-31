@@ -7,6 +7,9 @@ function [T_sequence, diagnostics] = vl_motion_estimation(videoObj)
     %   T_sequence - 3x3xN 的双精度数组，记录每帧到前一帧的仿射变换
     %   diagnostics - 包含耗时和统计信息的结构体
     
+    if nargin < 2, frameQueue = []; end
+    if nargin < 3, diagQueue = []; end
+    
     numFrames = videoObj.NumFrames;
     height = videoObj.Height;
     width = videoObj.Width;
@@ -24,6 +27,10 @@ function [T_sequence, diagnostics] = vl_motion_estimation(videoObj)
         tic;
         [prev_f, prev_d] = vl_sift(prevGray);
         total_time_ms = total_time_ms + toc * 1000;
+        
+        if ~isempty(frameQueue)
+            send(frameQueue, struct('idx', 1, 'N', numFrames, 'phase', 1, 'frame', prevFrame));
+        end
     end
     
     for i = 2:numFrames
@@ -66,6 +73,16 @@ function [T_sequence, diagnostics] = vl_motion_estimation(videoObj)
         prev_d = curr_d;
         
         total_time_ms = total_time_ms + toc * 1000;
+        
+        if ~isempty(frameQueue)
+            % 可以包含 inlierRatio
+            inlierRatio = NaN;
+            if numMatches >= 3 && exist('tform', 'var')
+                % 简化的内点率，这只是示例
+                inlierRatio = 1.0; 
+            end
+            send(frameQueue, struct('idx', i, 'N', numFrames, 'phase', 1, 'frame', currFrame, 'inlierRatio', inlierRatio));
+        end
     end
     
     diagnostics.total_time_ms = total_time_ms;

@@ -8,6 +8,8 @@ function [diagnostics] = vl_frame_synthesis(videoObj, T_smoothed, T_raw_seq, out
         T_raw_seq (3,3,:) double
         outputPath (1,:) char
         params struct = struct()
+        frameQueue = []
+        diagQueue = []
     end
     
     if ~isfield(params, 'enable_deblur'), params.enable_deblur = false; end
@@ -82,6 +84,10 @@ function [diagnostics] = vl_frame_synthesis(videoObj, T_smoothed, T_raw_seq, out
         end
         
         writeVideo(v, stabilizedFrame);
+        
+        if ~isempty(frameQueue)
+            send(frameQueue, struct('idx', i, 'N', numFrames, 'phase', 3, 'frame', stabilizedFrame, 'deblurApplied', params.enable_deblur));
+        end
     end
     
     close(v);
