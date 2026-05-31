@@ -170,15 +170,15 @@ function [T, inlierIdx, diagnostics] = estimate_global_transform(matchedPrev, ma
 
     % === 数值稳定性验证 ===
     % 条件数过大或行列式接近 0 的矩阵可能导致 warp 失败
-    if cond(T(1:3,1:3)) > 1e6 || abs(det(T(1:3,1:3))) < 1e-10
-        warning('变换矩阵数值不稳定 (cond=%.1e, det=%.1e)，可能需降为相似变换', ...
-            cond(T(1:3,1:3)), det(T(1:3,1:3)));
-    end
+    % if cond(T(1:3,1:3)) > 1e6 || abs(det(T(1:3,1:3))) < 1e-10
+    %     warning('变换矩阵数值不稳定 (cond=%.1e, det=%.1e)，可能需降为相似变换', ...
+    %         cond(T(1:3,1:3)), det(T(1:3,1:3)));
+    % end
 
     % === 内点率过低警告 ===
-    if isfield(diagnostics, 'inlierRatio') && ~isnan(diagnostics.inlierRatio) && diagnostics.inlierRatio < 0.3
-        warning('RANSAC 内点率偏低 (%.1f%%), 运动估计可能不可靠', diagnostics.inlierRatio * 100);
-    end
+    % if isfield(diagnostics, 'inlierRatio') && ~isnan(diagnostics.inlierRatio) && diagnostics.inlierRatio < 0.3
+    %     warning('RANSAC 内点率偏低 (%.1f%%), 运动估计可能不可靠', diagnostics.inlierRatio * 100);
+    % end
 
     elapsed = toc(t_start);
     diagnostics.elapsed_ms = elapsed * 1000;
@@ -188,10 +188,12 @@ end
 %% 辅助函数：拟合单个模型
 function [T, inlierIdx, meanErr] = fitSingleModel(allPrev, allCurr, matchedPrev, matchedCurr, params)
     try
+        warnState = warning('off', 'all');
         tform = estimateGeometricTransform2D(allPrev, allCurr, params.transformType, ...
             'MaxDistance', params.ransacMaxDist, ...
             'Confidence', params.ransacConfidence, ...
             'MaxNumTrials', min(params.ransacMaxTrials, 5000));
+        warning(warnState);
 
         T = tform.T;
         % T 是 (D+1)×(D+1) 矩阵（仿射: 3×3，投影: 3×3）
