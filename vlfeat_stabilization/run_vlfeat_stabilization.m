@@ -6,14 +6,14 @@ function run_vlfeat_stabilization()
     
     % 2. 输入输出设置
     % 使用项目自带数据，这里假设有 data/test_videos/ 目录
-    videoPath = fullfile('..', 'data', 'test_videos', 'synth_bumpy_riding.mp4');
+    videoPath = fullfile('..', 'data', 'test_videos', 'synth_handheld_walking.mp4');
     if ~exist(videoPath, 'file')
         % 如果没有样本视频，尝试从项目根目录或者提供一个警告
         warning('未找到测试视频 %s, 请指定有效的视频路径。', videoPath);
         return;
     end
     
-    outputPath = fullfile('..', 'data', 'results', 'vlfeat_bumpy_stabilized.mp4');
+    outputPath = fullfile('..', 'data', 'results', 'vlfeat_handheld_stabilized.mp4');
     videoObj = VideoReader(videoPath);
     
     disp('=== 开始基于 VLFeat 的视频防抖流水线 ===');
@@ -31,10 +31,14 @@ function run_vlfeat_stabilization()
     % 阶段 3: 帧合成与去模糊
     disp('阶段三：帧合成与去模糊导出...');
     
-    % 配置去模糊参数
-    synth_params.enable_deblur = true;
-    synth_params.exposure_fraction = 0.3; % 降低曝光占比，防止因为大抖动产生巨大的模糊核导致图像毁灭
-    synth_params.nsr = 0.05;              % 提高 NSR，增强平滑度，抑制剧烈的水波纹 (Ringing Artifacts)
+    % 配置合成参数
+    synth_params.enable_deblur = false;   % 原视频无光学运动模糊，关闭维纳去卷积，防止产生严重的振铃效应和额外模糊！
+    synth_params.enable_sharpen = true;   % 开启 USM 锐化，补偿 imwarp 几何插值带来的平滑
+    synth_params.exposure_fraction = 0.3; % 保留原参数以便未来真实视频使用
+    synth_params.nsr = 0.05;              
+    
+    synth_params.crop_ratio = 0.05;       % 裁剪比例：裁掉边缘的 5% 以去除黑边
+    synth_params.resize_to_original = false; % 不放大回原分辨率，避免强行放大导致的二次模糊
     
     diag_synth = vl_frame_synthesis(VideoReader(videoPath), T_smoothed, T_sequence, outputPath, synth_params);
     fprintf('帧合成耗时: %.2f ms\n', diag_synth.total_time_ms);
