@@ -159,48 +159,7 @@ function T_seq = params_to_transforms(paramHistory)
 end
 
 
-%% 局部函数：relative_to_absolute —— 增量积分重建绝对参数
-%
-% 与 relative_coordinate_model.m 中的版本完全一致。
-% 作为局部函数内联以避免跨文件依赖。
-% 参考论文 17_中北大学 (MDPI 2025)
-%
-function paramAbsolute = relative_to_absolute(paramRelative, initAbsolute, params)
-    arguments
-        paramRelative (:,6) double
-        initAbsolute (1,6) double
-        params struct = struct()
-    end
 
-    if ~isfield(params, 'useLogScale'),  params.useLogScale = true; end
-
-    N = size(paramRelative, 1);
-    if N == 0
-        paramAbsolute = initAbsolute;
-        return;
-    end
-
-    paramAbsolute = zeros(N, 6);
-
-    paramAbsolute(:, 1) = initAbsolute(1) + cumsum(paramRelative(:, 1));
-    paramAbsolute(:, 2) = initAbsolute(2) + cumsum(paramRelative(:, 2));
-    paramAbsolute(:, 3) = initAbsolute(3) + cumsum(paramRelative(:, 3));
-
-    if params.useLogScale
-        paramAbsolute(1, 4) = initAbsolute(4);
-        for i = 2:N
-            paramAbsolute(i, 4) = paramAbsolute(i-1, 4) * exp(paramRelative(i, 4));
-        end
-    else
-        paramAbsolute(1, 4) = initAbsolute(4);
-        for i = 2:N
-            paramAbsolute(i, 4) = paramAbsolute(i-1, 4) + paramRelative(i, 4);
-        end
-    end
-
-    paramAbsolute(:, 5) = initAbsolute(5) + cumsum(paramRelative(:, 5));
-    paramAbsolute(:, 6) = initAbsolute(6) + cumsum(paramRelative(:, 6));
-end
 
 
 %% 局部函数：safeField —— 安全读取 struct 字段

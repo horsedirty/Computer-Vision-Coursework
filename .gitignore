@@ -18,8 +18,12 @@ data/results/*.mp4
 data/results/*.avi
 data/results/*.mat
 data/results/*.csv
+data/evaluation_results
 HeartBeat/
 
 # IDE
 .vscode/
 .idea/
+
+# Video
+*.mp4

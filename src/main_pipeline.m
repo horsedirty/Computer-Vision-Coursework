@@ -37,23 +37,78 @@
 
 function main_pipeline(params)
     arguments
-        params struct
+        params = struct() % 去掉强制 struct 类型限制，允许传入字符串
+    end
+    
+    % ================================================================
+    % 自动环境配置：确保子模块都能被正确调用
+    % ================================================================
+    scriptDir = fileparts(mfilename('fullpath'));
+    addpath(fullfile(scriptDir, 'motion_estimation'));
+    addpath(fullfile(scriptDir, 'motion_smoothing'));
+    addpath(fullfile(scriptDir, 'frame_synthesis'));
+    addpath(fullfile(scriptDir, 'evaluation'));
+    addpath(fullfile(scriptDir, 'utils'));
+
+    % ================================================================
+    % 灵活的参数解析
+    % ================================================================
+    % 如果传入的是字符串/字符向量，直接转换为 struct 的 inputVideo 字段
+    if ischar(params) || isstring(params)
+        vidPath = char(params);
+        params = struct();
+        params.inputVideo = vidPath;
+    end
+    
+    % ================================================================
+    % 默认程序入口：批处理默认目录下的所有视频
+    % ================================================================
+    if nargin == 0 || (~isfield(params, 'inputVideo') && isempty(fieldnames(params)))
+        defaultInputDir = '/Users/maziang/Documents/计算机视觉/结课作业/data/test_videos';
+        
+        fprintf('========== 默认程序入口启动 ==========\n');
+        fprintf('未指定特定视频，进入批处理模式\n');
+        
+        videoFiles = dir(fullfile(defaultInputDir, '*.mp4'));
+        if isempty(videoFiles)
+            fprintf('目录 %s 下没有找到 .mp4 视频文件。\n', defaultInputDir);
+            return;
+        end
+        
+        for i = 1:numel(videoFiles)
+            vidPath = fullfile(defaultInputDir, videoFiles(i).name);
+            fprintf('\n--- 正在处理视频 %d/%d: %s ---\n', i, numel(videoFiles), videoFiles(i).name);
+            main_pipeline(vidPath); % 递归调用单文件处理模式
+        end
+        fprintf('\n========== 所有默认任务处理完毕 ==========\n');
+        return;
     end
 
     % ================================================================
-    % 参数初始化
+    % 参数初始化 (单文件流水线逻辑)
     % ================================================================
     if ~isfield(params, 'inputVideo') || isempty(params.inputVideo)
-        error('请指定输入视频路径: params.inputVideo');
+        error('请指定输入视频路径: params.inputVideo (也可以直接传入视频路径字符串)');
     end
+    
     inputVideo  = params.inputVideo;
+    [~, vidName, ~] = fileparts(inputVideo);
+
+    % 默认输出视频和报告目录
+    defaultOutputDir = '/Users/maziang/Documents/计算机视觉/结课作业/data/results';
+    defaultEvalDir = '/Users/maziang/Documents/计算机视觉/结课作业/data/evaluation_results';
+    if ~exist(defaultOutputDir, 'dir'), mkdir(defaultOutputDir); end
+    if ~exist(defaultEvalDir, 'dir'), mkdir(defaultEvalDir); end
 
     outputVideo = safeField(params, 'outputVideo', ...
-        fullfile('data', 'results', 'stabilized.mp4'));
+        fullfile(defaultOutputDir, ['stab_', vidName, '.mp4']));
     startFrame  = safeField(params, 'startFrame', 1);
     maxFrames   = safeField(params, 'maxFrames', Inf);
     verbose     = safeField(params, 'verbose', true);
     saveDiag    = safeField(params, 'saveDiagnostics', true);
+    
+    % 是否在结束后自动生成报告
+    autoEvaluate = safeField(params, 'autoEvaluate', true);
 
     motion_params    = safeField(params, 'motion_params', struct());
     smooth_params    = safeField(params, 'smooth_params', struct());
@@ -241,6 +296,24 @@ function main_pipeline(params)
             'diag_motion', 'diag_smooth', 'diag_synth', ...
             'total_time_per_frame', 'synth_times', 'overall_fps', 'sceneAgg');
         fprintf('诊断数据: %s\n', diagFile);
+    end
+
+    % ================================================================
+    % 第六步: 自动生成评估报告 (单文件模式)
+    % ================================================================
+    if autoEvaluate
+        try
+            fprintf('\n[Pipeline] 正在自动生成量化评估报告...\n');
+            evalParams = struct();
+            evalParams.inputVideo = inputVideo;
+            evalParams.outputDir = fullfile(defaultEvalDir, vidName);
+            evalParams.skipAblation = true; % 只生成该视频的基础报告
+            evalParams.verbose = false;
+            run_full_evaluation(evalParams);
+            fprintf('[Pipeline] 报告已生成至: %s\n', evalParams.outputDir);
+        catch ME
+            warning('自动生成评估报告失败: %s', ME.message);
+        end
     end
 end
 

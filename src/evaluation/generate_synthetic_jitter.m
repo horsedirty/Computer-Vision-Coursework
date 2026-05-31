@@ -142,14 +142,20 @@ function T_groundtruth = generate_synthetic_jitter(inputFile, outputFile, params
         [warpedFrame, ~] = imwarp(frame, tform, 'OutputView', imref2d(size(frame)), ...
                                   'FillValues', 0);
         
-        % （可选）简单模拟运动模糊
+        % （可选）增强运动模糊效果
         if params.addBlur && i > 1
             dx = Tx(i) - Tx(i-1);
             dy = Ty(i) - Ty(i-1);
             len = sqrt(dx^2 + dy^2);
-            if len > 2
-                angle = atan2d(-dy, dx); % atan2d 角度
-                hBlur = fspecial('motion', min(len, 20), angle); % 限制最大模糊长度
+            
+            % 稍微克制一下模糊长度，避免把所有的特征点（角点、边缘）都抹除掉
+            % 否则 SIFT/SURF 检测器会因为找不到足够的特征点而报错
+            blurLen = max(len * 1.2, 3); 
+            
+            if len > 1 
+                angle = atan2d(-dy, dx); 
+                % 将最大模糊限制在 20 像素，保证特征点能存活下来
+                hBlur = fspecial('motion', min(blurLen, 20), angle); 
                 warpedFrame = imfilter(warpedFrame, hBlur, 'replicate');
             end
         end
