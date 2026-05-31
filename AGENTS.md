@@ -21,12 +21,11 @@
 | 计算机视觉 | Computer Vision Toolbox | 关键点检测、光流、RANSAC、VideoReader/Writer |
 | 图像处理 | Image Processing Toolbox | imwarp、deconvwnr、fspecial、imcrop |
 | 并行计算 | Parallel Computing Toolbox | parfeval 异步处理（GUI 不卡顿） |
-| 深度学习 | Deep Learning Toolbox（可选） | ONNX 模型导入（去模糊网络） |
 | GUI | MATLAB App Designer | `.mlapp` 文件，uifigure 组件 |
 | 版本控制 | Git | 所有 `.m` 文件纳入版本管理 |
 | 论文引用 | GB/T 7714 格式 | 17 篇参考文献，见 `papers/` 目录 |
 
-**硬性约束：不允许引入 Python、C++ MEX、或任何非 MATLAB 原生的外部依赖。** 所有功能必须使用 MATLAB 内置函数或官方工具箱实现。ONNX 模型导入是唯一例外（需要 Deep Learning Toolbox 且为可选模块）。
+**硬性约束：不允许使用深度学习的模型和算法。外部调用 C++ 或 Python 是许可的。**
 
 ---
 
@@ -178,7 +177,8 @@ end
 
 ## 7. 禁止事项
 
-- **禁止**引入 Python、C++ MEX 或任何非 MATLAB 原生依赖（ONNX 模型导入除外且为可选）。
+- **禁止**使用深度学习的模型和算法。
+- **允许**外部调用 C++ 或 Python。
 - **禁止**硬编码文件路径。所有路径通过 `params` struct 传入或使用相对路径。
 - **禁止**跳过 `arguments` 块进行手动参数类型检查。
 - **禁止**修改其他模块的 `run_*.m` 主入口函数签名（INPUT/OUTPUT 契约是跨模块约定，单方面改动会破坏集成）。
