@@ -1,4 +1,4 @@
-function [diagnostics] = vl_frame_synthesis(videoObj, T_smoothed, T_raw_seq, outputPath, params)
+function [diagnostics] = vl_frame_synthesis(videoObj, T_smoothed, T_raw_seq, outputPath, params, frameQueue, diagQueue)
     % VL_FRAME_SYNTHESIS 应用平滑后的变换矩阵进行帧重排并导出视频
     % 如果开启了 deblur，还会在 warp 之前使用 T_raw_seq 估算 PSF 并进行去卷积。
     

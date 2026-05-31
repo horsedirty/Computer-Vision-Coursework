@@ -1,4 +1,4 @@
-function [T_sequence, diagnostics] = vl_motion_estimation(videoObj)
+function [T_sequence, diagnostics] = vl_motion_estimation(videoObj, frameQueue, diagQueue)
     % VL_MOTION_ESTIMATION 基于 VLFeat 提取 SIFT 特征进行运动估计
     % 
     % INPUT:
