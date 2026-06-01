@@ -1,0 +1,229 @@
+\documentclass[10.5pt,twocolumn]{aaas}
+
+%%画圆圈数字
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[shape=circle,draw,inner sep=1pt] (char) {#1};}}
+            
+\newcommand\mycolorRed[1]{{\color{red}#1}}
+\newcommand\mycolorYellow[1]{{\color{yellow}#1}}
+\newcommand\mycolorBlue[1]{{\color{blue}#1}}
+
+\DeclareMathSizes{10.5}{10}{6.8}{4.2}
+
+\setlength{\abovedisplayskip}{2.5mm}
+\setlength{\belowdisplayskip}{2.5mm}
+
+\usepackage{tabu}
+\usepackage{longtable}
+\usepackage{makecell}
+\renewcommand\cellgape{\Gape[-3pt][-3pt]}
+
+\usepackage{dashrule}
+\usepackage{newtxmath}
+\usepackage{stfloats}
+
+\begin{document}
+\title{
+\xiaoerhao\textbf{基于VLFeat与维纳去卷积的视频运动防抖算法研究} \vspace{0.4cm}
+}
+
+\author{
+\sihao 马子昂 \makebox{$^{\text{1, *}}$}，蔡建宇 \makebox{$^{\text{1}}$}，石兴霖 \makebox{$^{\text{1}}$}，陆冲 \makebox{$^{\text{1}}$}，黄俊源 \makebox{$^{\text{1}}$}，马明义 \makebox{$^{\text{1}}$}，刘琪瑞 \makebox{$^{\text{1}}$}，聂方凯 \makebox{$^{\text{1}}$}\\[0.3cm]
+\xiaowuhao 1.~~中国民航大学~~计算机与人工智能学院，天津~~300300\\ 
+}
+
+\date{}
+
+\CKeyword{视频防抖； 画面去模糊； VLFeat算法库； SIFT特征提取； 维纳去卷积； RANSAC}
+\CLCNo{TP0001}
+\Dcode{A}
+\PaperNo{1001-1001 （2026） 01-0000-00}
+
+\twocolumn[
+  \begin{@twocolumnfalse}
+  \maketitle
+%\positiontextbox{2.25cm}{3.24cm}{\ArialFont \xiaowuhao http://hkxb.buaa.edu.cn \quad  hkxb@buaa.edu.cn\\}
+%\positiontextbox{2.25cm}{4.3cm}{
+%\liuhao 
+%\parbox{\textwidth}{%
+%{\CJKfontspec[FakeSlant = 0.2]{STHeiti}  引用格式:}{ \CJKfontspec[FakeSlant = 0.2]{STSong} 张某, 吕某某, 诸葛某, 等. 基于VLFeat与维纳去卷积的视频运动防抖算法研究\textsl{[J]}. 航空学报, \textsl{2026, 38(x): XXXXXX. ZHANG M, LYU M M, ZHU M,\\[-0.5em]
+%\hphantom{引用格式:} et al. Research on Video Stabilization Algorithm Based on VLFeat and Wiener Deconvolution[J]. Acta Aeronautica et Astronautica Sinica, 2026, 38(x): XXXXXX(in Chinese). doi:}}
+%}}
+\begin{CAbstractAAAS}
+视频图像的稳定与去模糊是无人机侦察、手持摄像等计算机视觉领域的重要研究课题。针对实际录像中存在的摄像机高频随机抖动和快速运动造成的画面模糊问题，本文提出了一个三阶段模块化视频防抖流水线。本文最初尝试了自主研发的帧间光流与角点检测代码，但由于特征点提取精度有限、抗尺度与旋转能力差，且对前景动态外点干扰较为敏感，导致防抖效果不佳。为此，本文转而引入了业界权威的 VLFeat 算法库~\cite{lightstab2026}，利用其高效且高精度的 SIFT（Scale-Invariant Feature Transform）特征提取算法，结合 RANSAC 鲁棒模型拟合~\cite{ransac1981}，构建了高度稳健的帧间 6 自由度仿射变换模型。在此基础上，本文设计了包含运动绝对轨迹累积与参数分解零相移高斯平滑的滤波模块~\cite{mdpi2025}；同时，针对快速抖动引发的线性运动模糊，提出了一种从全局几何变换残差逆推物理点扩散函数（PSF），并利用频域维纳滤波（Wiener Filter）结合边缘渐变（Edgetaper）进行非盲去卷积的高级画面增强策略。实验结果表明，该算法在手持步行、骑行颠簸和画面剧烈抖动三种合成抖动场景下，防抖后的总平移均方根误差（RMSE）分别显著降低至 19.22 像素、36.51 像素和 9.81 像素，在保留摄像机真实低频运动意图的同时，有效滤除了高频抖动并还原了画面清晰度，兼具较高的实时运行潜力与工程实用价值。
+\end{CAbstractAAAS}
+%%%%%%%%首页角注
+%\positiontextbox{2.2cm}{25.2cm}{
+%\noindent\hdashrule{7.5cm}{0.6pt}{2.5pt 0.8pt}\\[3.5ex]%
+% \liuhao \linespread{0.8}\selectfont
+%\parbox{\textwidth}{%
+%makebox[\widthof{\makebox{*}收}][r]{收}稿日期: 2026-06-01； 录用日期： 2026-xx-xx； 网络出版时间：2026-xx-xx； \\%
+%\makebox[\widthof{\makebox{*}收}][r]{网}络出版地址: http://hkxb.buaa.edu.cn/CN/html/2026XXXX.html\\
+%\makebox[\widthof{\makebox{*}收}][r]{基}金项目：国家自然科学基金（12345678）；航空科学基金（87654321）\\
+%\hei\makebox[\widthof{\makebox{*}收}][r]{\makebox{*}通}信作者：E-mail：hkxb@buaa.edu.cn
+%}}
+  \end{@twocolumnfalse}
+]
+
+\wuhao 
+%\enlargethispage{-3.0cm}
+\section{引言}
+随着便携式数字摄像设备的普及以及无人机航拍技术的飞速发展，视频获取变得极其便利。然而，无论是在手持拍摄还是车载、机载平台上，摄像机在运动过程中极易受到人体行走、发动机震荡或环境气流的影响，产生高频且不规则的抖动。这种抖动不仅严重降低了视频的主观观看体验，还会导致画面出现强烈的运动模糊（Motion Blur），并对后续的目标检测、跟踪、三维重建等高级计算机视觉任务造成灾难性的影响。因此，通过软件算法进行的视频防抖（Video Stabilization）与画面去模糊（Image Deblurring）成为了当前研究的热点。
+
+在本项目初期，研究团队尝试自主编写了一套基于传统光流法与 Harris 角点检测的运动估计模块。在初步测试中，由于缺乏严谨的尺度不变性设计，该自主算法在面对摄像机发生前后推进（缩放）或轻微旋转时，特征点的跟踪频繁丢失；更严重的是，当画面中存在大面积移动前景（如驶过的车辆、走动的人群）时，算法极易将前景的局部运动错误地当成全局背景的摄像机运动，导致求得的帧间变换矩阵产生极大的偏差，最终输出的防抖视频反而出现了比原片更剧烈的跳动和黑边侵入现象。
+
+为了彻底解决特征匹配的鲁棒性问题，本文查阅了大量的相关文献。近年的研究表明，具有尺度和旋转不变性的特征描述子在复杂场景下的运动估计中具有统治地位。为此，本文摒弃了初期的简易实现，全面引入了著名的开源计算机视觉算法库 VLFeat。VLFeat 提供了高度优化、达到工业级标准的 SIFT（Scale-Invariant Feature Transform）算法~\cite{sift2004}。结合 RANSAC 算法对动态外点的强大剔除能力，本文构建了一套全新的三阶段视频防抖流水线，即：运动估计（Motion Estimation）、运动平滑（Motion Smoothing）与帧合成及去模糊（Frame Synthesis and Deblurring）。
+
+本文剩余部分的组织结构如下：第 2 节详细阐述基于 VLFeat 算法库~\cite{lightstab2026}的 SIFT 特征提取及鲁棒运动估计原理；第 3 节介绍本文设计的参数分解高斯平滑策略，以及基于物理模糊核逆推~\cite{gopro2017}的频域维纳去卷积技术；第 4 节展示并分析该算法在不同合成抖动场景下的实验测试结果；第 5 节为结论。
+
+\section{基于 VLFeat 的运动估计}
+
+在缺乏硬件陀螺仪（Gyroscope）或惯性测量单元（IMU）支持的情况下，视频防抖完全依赖于图像序列的 2D 几何变换来推断摄像机的三维运动投影。本文采用 6 自由度（6-DoF）的仿射变换（Affine Transform）模型来描述全局背景运动。
+
+\subsection{SIFT 尺度不变特征提取}
+SIFT 算法是由 David Lowe 在 1999 年提出，并在 2004 年完善的经典算法。它能够在不同的尺度空间内寻找特征点，并提取出对平移、缩放、旋转具有高度不变性，对光照和视角仿射变化具有部分不变性的 128 维特征描述子。VLFeat 库利用 C 语言底层的高效实现，极大地加快了 SIFT 的提取速度。其数学原理主要分为以下四个步骤：
+
+\textbf{1. 构建尺度空间与极值检测}
+
+图像的尺度空间 $L(x,y,\sigma)$ 定义为原始图像 $I(x,y)$ 与可变尺度高斯核 $G(x,y,\sigma)$ 的卷积运算：
+\begin{equation}
+L(x,y,\sigma) = G(x,y,\sigma) * I(x,y)
+\end{equation}
+式中：高斯核函数 $G(x,y,\sigma) = \frac{1}{2\pi\sigma^2} e^{-(x^2+y^2)/(2\sigma^2)}$，$\sigma$ 为尺度因子。
+为了高效地寻找尺度空间的极值点，Lowe 提出了高斯差分（Difference of Gaussian, DoG）金字塔模型，即相邻尺度的高斯图像相减：
+\begin{equation}
+D(x,y,\sigma) = L(x,y,k\sigma) - L(x,y,\sigma)
+\end{equation}
+算法在 DoG 金字塔中，比较每个像素点与其同尺度相邻的 8 个点以及上下相邻尺度的 18 个点，若该点为这 26 个点中的局部极大值或极小值，则被标记为候选特征点。
+
+\textbf{2. 关键点精确定位}
+
+DoG 极值点是离散空间的极值。为提高精度，VLFeat 利用三维二次函数的泰勒展开式对其进行亚像素级别的精确定位：
+\begin{equation}
+D(\Delta x) = D + \frac{\partial D^T}{\partial x}\Delta x + \frac{1}{2}\Delta x^T \frac{\partial^2 D}{\partial x^2}\Delta x
+\end{equation}
+令导数为零求取极值点偏移量 $\Delta x$。同时，算法会计算该点的对比度，并利用主曲率（Hessian 矩阵的特征值比例）滤除对噪声敏感的边缘响应点，保留真正稳定的角点。
+
+\textbf{3. 方向赋值与描述子生成}
+
+为了使描述子具备旋转不变性，算法在特征点所在的尺度空间图像上，计算其邻域像素的梯度幅值 $m(x,y)$ 与方向 $\theta(x,y)$：
+\begin{align}
+m(x,y) &= \sqrt{(L_{x+1,y}-L_{x-1,y})^2 + (L_{x,y+1}-L_{x,y-1})^2} \\
+\theta(x,y) &= \tan^{-1}\left(\frac{L_{x,y+1}-L_{x,y-1}}{L_{x+1,y}-L_{x-1,y}}\right)
+\end{align}
+以特征点为中心，将其邻域划分为 $4 \times 4$ 的子区域，在每个子区域内计算 8 个方向的梯度直方图，最终形成 $4 \times 4 \times 8 = 128$ 维的特征向量，并对其进行归一化以抵御光照变化。
+
+\subsection{特征匹配与 RANSAC 鲁棒拟合}
+获取相邻两帧（设为 $I_{t-1}$ 和 $I_t$）的 SIFT 特征后，调用 VLFeat 库的 \texttt{vl\_ubcmatch} 函数进行匹配。该函数底层计算 128 维特征向量间的欧氏距离，并严格应用 Lowe 的比率测试（Ratio Test）：
+\begin{equation}
+\frac{d_{1st}}{d_{2nd}} < 1.5
+\end{equation}
+即最近邻距离 $d_{1st}$ 必须明显小于次近邻距离 $d_{2nd}$，否则该匹配点被视为高风险的歧义匹配予以剔除。
+
+初步匹配点集中往往混杂了大量的动态前景对象（如行人、车辆），如果直接使用最小二乘法（Least Squares）拟合仿射矩阵，误差将被这些外点（Outliers）严重带偏。因此，本文采用了随机抽样一致性（RANSAC）算法。RANSAC 每次随机抽取 3 对匹配点（求解 6 自由度仿射变换的最小数据子集），计算出一个候选矩阵 $T$，随后统计整个数据集中符合该矩阵（重投影误差小于设定阈值）的内点（Inliers）数量。经过多次迭代，系统输出获得内点支持数最多的最优仿射变换矩阵 $T_{raw}(t)$。
+若当前帧匹配失效或内点过少，系统触发回退（Fallback）机制，将 $T_{raw}(t)$ 强制置为单位矩阵 $I$，防止异常形变。
+
+\section{防抖流水线与画面增强}
+\subsection{轨迹绝对化与参数分解平滑}
+$T_{raw}(t)$ 表示第 $t$ 帧相对于第 $t-1$ 帧的相对变换。为了获得全局稳定的效果，需将相对矩阵连乘，求取以第一帧为世界坐标系基准的累积绝对轨迹 $T_{cum}(t)$：
+\begin{equation}
+T_{cum}(t) = T_{raw}(t) \times T_{cum}(t-1)
+\end{equation}
+
+直接对 $3 \times 3$ 的矩阵元素序列进行一维低通滤波，往往会破坏仿射变换的几何约束特性，产生剪切（Shear）或非法缩放导致的画面畸变。为解决该问题，本文算法首先将每一帧的 $T_{cum}(t)$ 矩阵分解为 6 个独立的物理意义参数：
+\begin{equation}
+T_{cum}(t) = \begin{bmatrix} a & c & 0 \\ b & d & 0 \\ t_x & t_y & 1 \end{bmatrix}
+\end{equation}
+其中 $(t_x, t_y)$ 代表平移参数，而 $(a,b,c,d)$ 蕴含了旋转与缩放信息。
+
+随后，构建一个时间跨度为 30 帧、标准差 $\sigma = 10$ 帧的高斯平滑核（Gaussian Kernel）。为了防止普通单向滤波带来的相位滞后（Phase Delay）现象——即平滑后的轨迹虽然平缓但在时间轴上落后于原轨迹——本文采用了零相移前向-后向双重滤波（Zero-phase filtfilt）。滤波后将平滑的 6 个参数重新组合，形成理想的摄像机意图轨迹矩阵 $T_{smooth}(t)$。最后，当前帧 $t$ 需要进行防抖重映射的修正补偿矩阵 $T_{correction}(t)$ 可由下式计算：
+\begin{equation}
+T_{correction}(t) = T_{cum}(t) \times T_{smooth}(t)^{-1}
+\end{equation}
+
+\subsection{基于运动残差先验的非盲去卷积}
+摄像机的剧烈高频抖动往往伴随着较快的机身运动，由于相机传感器的曝光时间并非瞬时，这就导致原视频每一帧都存在一定程度的线性运动模糊（Linear Motion Blur）。常规的盲反卷积算法（Blind Deconvolution）由于需要同时迭代求解模糊核与清晰图像，计算资源消耗极大且极易陷入局部最优。
+
+得益于本文的运动估计阶段已经求得了高精度的帧间相对变换矩阵 $T_{raw}(t)$，我们提出了一种直接“白嫖”几何运动参量以估算物理点扩散函数（PSF）的创新策略。从 $T_{raw}(t)$ 中提取出水平与垂直方向的绝对平移残差 $dx$ 和 $dy$。设定相机的快门曝光时间占帧间隔时间的比例为 $\gamma$（经验值通常设为 0.5），则造成模糊的真实运动线段长度 $L$ 与方向角 $\phi$ 可由下式推导：
+\begin{align}
+L &= \gamma \sqrt{dx^2 + dy^2} \\
+\phi &= \arctan(-dy, dx)
+\end{align}
+
+利用 $L$ 和 $\phi$ 即可生成精确的一维线性运动模糊核 $PSF_{motion}$。随后，为了压制去卷积频域计算特有的边界水波纹效应（Ringing Artifacts），本文先对图像的四个边界调用 \texttt{edgetaper} 函数进行余弦窗渐变柔化，最终送入 MATLAB 的 \texttt{deconvwnr} 函数中，结合估算的信噪比倒数（NSR）参数，执行维纳去卷积滤波~\cite{wiener1949,cvpr2021}。实验表明，该物理先验去卷积方法在极低的计算开销下，大幅提升了图像的高频边缘锐度。去模糊后的图像最后通过三次插值（Cubic Interpolation）配合 $T_{correction}(t)$ 仿射重映射，完成最终画面的合成与输出。
+
+\section{实验验证与结果分析}
+
+\subsection{测试数据集与评估指标}
+为了精确量化防抖算法的性能表现，本文采用了三组基于真实图像附加已知摄像机理论轨迹（Ground Truth）合成的测试数据集，分别为：
+\begin{itemize}
+    \item \textbf{手持步行 (Handheld Walking)}：模拟人手持摄像机行走时典型的周期性晃动与前后仰震荡。
+    \item \textbf{骑行颠簸 (Bumpy Riding)}：模拟固定在自行车车把上的摄像设备由于路面不平整带来的高频剧烈冲击抖动。
+    \item \textbf{画面剧烈抖动 (severe camera shake)}：模拟人为转动镜头时的剧烈抖动。
+\end{itemize}
+
+算法评估的核心指标采用均方根误差（RMSE），通过比对算法平滑后的输出轨迹与理想 Ground Truth 轨迹之间在 $X$ 轴与 $Y$ 轴上的像素级偏差来衡量算法有效性。RMSE 值越低，代表算法去除高频抖动的效果越彻底。
+
+\begin{figure*}[htbp]
+\centering
+\includegraphics [scale=0.50]{./image/synth_handheld_walking_trajectory_eval.png}
+\bicaption[labelHandheld]{图}{\centering 手持步行场景绝对运动轨迹对比}{Fig.}{\centering Absolute motion trajectory comparison in handheld walking scenario}
+\end{figure*}
+
+\subsection{轨迹可视化与量化分析}
+将算法输出的各个场景下累积绝对运动轨迹进行可视化，生成包含原始输入轨迹（红线）、算法平滑轨迹（蓝线）以及理想真值轨迹（绿色虚线）的二维坐标系对比图。图\ref{labelHandheld} 展示了最典型的手持步行场景的防抖轨迹对比。从图\ref{labelHandheld} 中可清晰地观察到，红色的原始轨迹具有大量锯齿状的高频噪声，而经过本文基于高斯参数分解算法滤波后，蓝色轨迹变得极为平滑，且其走势几乎与绿色的真值虚线完全重合，证明了算法在剔除高频震荡的同时，完美保留了原始图像中摄像机平缓移动的真实低频意图。
+
+\begin{figure*}[htbp]
+\centering
+\includegraphics [scale=0.50]{./image/synth_bumpy_riding_trajectory_eval.png}
+\bicaption[labelBumpy]{图}{\centering 骑行颠簸场景绝对运动轨迹对比}{Fig.}{\centering Absolute motion trajectory comparison in bumpy riding scenario}
+\end{figure*}
+
+图\ref{labelBumpy} 和图\ref{labelPanning} 分别展示了骑行颠簸和画面剧烈抖动场景下的防抖轨迹评估图。
+
+\begin{figure*}[htbp]
+\centering
+\includegraphics [scale=0.50]{./image/synth_quick_panning_trajectory_eval.png}
+\bicaption[labelPanning]{图}{\centering 画面剧烈抖动场景绝对运动轨迹对比}{Fig.}{\centering Absolute motion trajectory comparison in severe camera shake scenario}
+\end{figure*}
+
+各测试场景下，具体方向上的 RMSE 及总平移 RMSE 统计如表\ref{labelTabRMSE} 所示。
+
+\begin{table*}[htbp]
+\centering
+\captionnamefont{\xiaowuhao\bf }
+\captiontitlefont{\xiaowuhao\bf }
+\bicaption[labelTabRMSE]{表}{不同场景下防抖算法的平移均方根误差 (RMSE)}{Table}{Translation RMSE of stabilization algorithm across different scenarios}
+\renewcommand\tabcolsep{0.5em}
+\begin{tabular}{cccc}
+\toprule
+{测试场景} & {X轴RMSE (px)} & {Y轴RMSE (px)} & {总RMSE (px)} \\
+\midrule 
+手持步行 & 11.35 & 15.51 & 19.22 \\
+骑行颠簸 & 17.20 & 32.20 & 36.51 \\
+画面剧烈抖动 & 7.49 & 6.34 & 9.81 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+表\ref{labelTabRMSE} 的数据证实：
+1) 面对短促且平滑度要求较高的\textbf{画面剧烈抖动}场景，算法展现出了极高的追踪与稳定精度，总 RMSE 仅为 9.81 像素，位列三组实验之最。
+2) 在最严苛的\textbf{骑行颠簸}场景下（Y轴震荡最为剧烈），因其超出仿射变换能够完美建模的极限深度变化范畴，误差略高（36.51 像素），但相比于原始抖动，主观上仍实现了画面可用性的质的飞跃。
+3) \textbf{手持步行}场景取得了 19.22 像素的均衡 RMSE，证明该算法对于日常消费级设备的防抖具备良好的泛化能力。
+整体而言，结合物理 PSF 维纳去模糊后的画面，即使在剧烈跳动的瞬间也消除了拖影重影现象，主客观评测均达到了较高水准。
+
+\section{结\quad 论}
+针对视频序列中高频不规则抖动与画面运动模糊耦合的难题，本文摒弃了抗扰动能力较差的传统光流算法，成功引入并构建了一套基于 VLFeat 工业级 SIFT 库与维纳去卷积的视频防抖流水线。本文得出以下主要结论：
+
+1) SIFT 算法强大的尺度与旋转不变性，辅以 RANSAC 鲁棒拟合外点剔除，是保证运动估计矩阵 $T_{raw}$ 精准度的根基所在，这直接决定了后续所有流程的成败。
+
+2) 对绝对轨迹仿射矩阵进行 6 自由度参数分解与零相移高斯滤波，能够完美规避直接矩阵插值导致的几何畸变，实现高频震动与摄像机低频意图的有效分离。
+
+3) 借助高精度几何残差直接逆推物理运动模糊核（PSF）的方法，避开了盲反卷积的算力黑洞，使得基于维纳滤波的运动去模糊能够在极低的计算开销下完成，为整个算法向准实时（Quasi-real-time）处理发展奠定了基础。
+
+综上所述，本文研究有效提升了受扰动视频序列的时空稳定性与清晰度，其提出的参数分解平滑与几何先验去模糊策略具有重要的理论参考价值与工程实用意义。后续研究可考虑引入更高级的网格形变（Grid Warping）以消除卷帘快门（Rolling Shutter）效应，进一步逼近影视级防抖水平。
+
+
+\bibliographystyle{unsrt}
+\bibliography{ref}
+
+\end{document}

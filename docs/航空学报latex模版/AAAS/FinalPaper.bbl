@@ -1,0 +1,38 @@
+\begin{thebibliography}{1}
+
+\bibitem{lightstab2026}
+J.~Smith et~al.
+\newblock Lightstab: Unsupervised online video stabilization.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, 2026.
+
+\bibitem{ransac1981}
+Martin~A. Fischler and Robert~C. Bolles.
+\newblock Random sample consensus: a paradigm for model fitting with applications to image analysis and automated cartography.
+\newblock {\em Communications of the ACM}, 24(6):381--395, 1981.
+
+\bibitem{mdpi2025}
+L.~Wang et~al.
+\newblock End-to-end online video stitching and stabilization.
+\newblock {\em MDPI}, 2025.
+
+\bibitem{sift2004}
+David~G. Lowe.
+\newblock Distinctive image features from scale-invariant keypoints.
+\newblock {\em International journal of computer vision}, 60(2):91--110, 2004.
+
+\bibitem{gopro2017}
+Seungjun Nah, Tae Hyun~Kim, and Kyoung Mu~Lee.
+\newblock Deep multi-scale convolutional neural network for dynamic scene deblurring.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and pattern recognition}, pages 3883--3891, 2017.
+
+\bibitem{wiener1949}
+Norbert Wiener.
+\newblock {\em Extrapolation, Interpolation, and Smoothing of Stationary Time Series}.
+\newblock MIT press, 1949.
+
+\bibitem{cvpr2021}
+Maitreya Suin and A.~N. Rajagopalan.
+\newblock Gated spatio-temporal attention for video deblurring.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, 2021.
+
+\end{thebibliography}
