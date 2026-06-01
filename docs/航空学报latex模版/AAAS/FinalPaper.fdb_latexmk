@@ -1,20 +1,20 @@
 # Fdb version 4
-["bibtex FinalPaper"] 1780320198.3523 "FinalPaper.aux" "FinalPaper.bbl" "FinalPaper" 1780320200.18636 0
+["bibtex FinalPaper"] 1780321745.3819 "FinalPaper.aux" "FinalPaper.bbl" "FinalPaper" 1780321747.18106 0
   "./ref.bib" 1780319590.27394 1725 cef17e9ae2d9133db27a1777e404f2f0 ""
   "/usr/local/texlive/2026/texmf-dist/bibtex/bst/base/unsrt.bst" 1292289607 18030 1376b4b231b50c66211e47e42eda2875 ""
-  "FinalPaper.aux" 1780320199.14318 2311 345ab9fb1e2c4fd59d4032a445113273 "xelatex"
+  "FinalPaper.aux" 1780321746.17368 2312 1e6c25ca8b62d63ee5b01e92338cca63 "xelatex"
   (generated)
   "FinalPaper.bbl"
   "FinalPaper.blg"
   (rewritten before read)
-["xdvipdfmx"] 1780320199.34967 "FinalPaper.xdv" "FinalPaper.pdf" "FinalPaper" 1780320200.18784 0
-  "FinalPaper.xdv" 1780320199.14392 120864 ce7b1d571846e783909c96028fd8bbb3 "xelatex"
+["xdvipdfmx"] 1780321746.36881 "FinalPaper.xdv" "FinalPaper.pdf" "FinalPaper" 1780321747.1825 0
+  "FinalPaper.xdv" 1780321746.17419 120984 0db4e27f4ec7b55dd3c7bf4856f3f735 "xelatex"
   (generated)
   "FinalPaper.pdf"
   (rewritten before read)
-["xelatex"] 1780320198.43105 "/Users/maziang/Documents/计算机视觉/结课作业/docs/航空学报latex模版/AAAS/FinalPaper.tex" "FinalPaper.xdv" "FinalPaper" 1780320200.18643 0
+["xelatex"] 1780321745.45811 "/Users/maziang/Documents/计算机视觉/结课作业/docs/航空学报latex模版/AAAS/FinalPaper.tex" "FinalPaper.xdv" "FinalPaper" 1780321747.18113 0
   "/System/Library/Fonts/Menlo.ttc" 1777577597 2156036 ec05dfca6821d85440da0899493002c3 ""
-  "/Users/maziang/Documents/计算机视觉/结课作业/docs/航空学报latex模版/AAAS/FinalPaper.tex" 1780320190.05969 19984 bcb0f15613fb8ecd4b2e3ea6a0c71b4a ""
+  "/Users/maziang/Documents/计算机视觉/结课作业/docs/航空学报latex模版/AAAS/FinalPaper.tex" 1780321706.61216 19993 7df176bc905e1a9a3f40f6cf2fb652af ""
   "/usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1136768653 1408 5937f58aa508ea2cea4901c07d10f5fe ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
@@ -229,9 +229,9 @@
   "/usr/local/texlive/2026/texmf-dist/web2c/texmf.cnf" 1770478701 43630 e9fa012910491fe5ae08a72c3c2997a7 ""
   "/usr/local/texlive/2026/texmf-var/web2c/xetex/xelatex.fmt" 1774321809 5948569 2bc820c839716a047e2b2047681118b2 ""
   "/usr/local/texlive/2026/texmf.cnf" 1772409725 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "FinalPaper.aux" 1780320199.14318 2311 345ab9fb1e2c4fd59d4032a445113273 "xelatex"
-  "FinalPaper.bbl" 1780320198.42862 1489 f3bde1461728f32cf013c17e85f6ef86 "bibtex FinalPaper"
-  "FinalPaper.tex" 1780320190.05969 19984 bcb0f15613fb8ecd4b2e3ea6a0c71b4a ""
+  "FinalPaper.aux" 1780321746.17368 2312 1e6c25ca8b62d63ee5b01e92338cca63 "xelatex"
+  "FinalPaper.bbl" 1780321745.45576 1489 f3bde1461728f32cf013c17e85f6ef86 "bibtex FinalPaper"
+  "FinalPaper.tex" 1780321706.61216 19993 7df176bc905e1a9a3f40f6cf2fb652af ""
   "aaas.cls" 1780319079.34725 11324 a40eddc703769316198ae02ee62ddfcf ""
   "cite.sty" 1780301503.10182 14119 101124fed797c2f4dc820c6da37d156a ""
   "image/synth_bumpy_riding_trajectory_eval.png" 1780301830.68223 165761 33da8ee82d36598a4ff95c9a52dbe60a ""

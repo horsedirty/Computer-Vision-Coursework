@@ -166,33 +166,33 @@ L &= \gamma \sqrt{dx^2 + dy^2} \\
 \begin{figure*}[htbp]
 \centering
 \includegraphics [scale=0.50]{./image/synth_handheld_walking_trajectory_eval.png}
-\bicaption[labelHandheld]{图}{\centering 手持步行场景绝对运动轨迹对比}{Fig.}{\centering Absolute motion trajectory comparison in handheld walking scenario}
+\bicaption[fig:handheld]{图}{\centering 手持步行场景绝对运动轨迹对比}{Fig.}{\centering Absolute motion trajectory comparison in handheld walking scenario}
 \end{figure*}
 
 \subsection{轨迹可视化与量化分析}
-将算法输出的各个场景下累积绝对运动轨迹进行可视化，生成包含原始输入轨迹（红线）、算法平滑轨迹（蓝线）以及理想真值轨迹（绿色虚线）的二维坐标系对比图。图\ref{labelHandheld} 展示了最典型的手持步行场景的防抖轨迹对比。从图\ref{labelHandheld} 中可清晰地观察到，红色的原始轨迹具有大量锯齿状的高频噪声，而经过本文基于高斯参数分解算法滤波后，蓝色轨迹变得极为平滑，且其走势几乎与绿色的真值虚线完全重合，证明了算法在剔除高频震荡的同时，完美保留了原始图像中摄像机平缓移动的真实低频意图。
+将算法输出的各个场景下累积绝对运动轨迹进行可视化，生成包含原始输入轨迹（红线）、算法平滑轨迹（蓝线）以及理想真值轨迹（绿色虚线）的二维坐标系对比图。图\ref{fig:handheld} 展示了最典型的手持步行场景的防抖轨迹对比。从图\ref{fig:handheld} 中可清晰地观察到，红色的原始轨迹具有大量锯齿状的高频噪声，而经过本文基于高斯参数分解算法滤波后，蓝色轨迹变得极为平滑，且其走势几乎与绿色的真值虚线完全重合，证明了算法在剔除高频震荡的同时，完美保留了原始图像中摄像机平缓移动的真实低频意图。
 
 \begin{figure*}[htbp]
 \centering
 \includegraphics [scale=0.50]{./image/synth_bumpy_riding_trajectory_eval.png}
-\bicaption[labelBumpy]{图}{\centering 骑行颠簸场景绝对运动轨迹对比}{Fig.}{\centering Absolute motion trajectory comparison in bumpy riding scenario}
+\bicaption[fig:bumpy]{图}{\centering 骑行颠簸场景绝对运动轨迹对比}{Fig.}{\centering Absolute motion trajectory comparison in bumpy riding scenario}
 \end{figure*}
 
-图\ref{labelBumpy} 和图\ref{labelPanning} 分别展示了骑行颠簸和画面剧烈抖动场景下的防抖轨迹评估图。
+图\ref{fig:bumpy} 和图\ref{fig:panning} 分别展示了骑行颠簸和画面剧烈抖动场景下的防抖轨迹评估图。
 
 \begin{figure*}[htbp]
 \centering
 \includegraphics [scale=0.50]{./image/synth_quick_panning_trajectory_eval.png}
-\bicaption[labelPanning]{图}{\centering 画面剧烈抖动场景绝对运动轨迹对比}{Fig.}{\centering Absolute motion trajectory comparison in severe camera shake scenario}
+\bicaption[fig:panning]{图}{\centering 画面剧烈抖动场景绝对运动轨迹对比}{Fig.}{\centering Absolute motion trajectory comparison in severe camera shake scenario}
 \end{figure*}
 
-各测试场景下，具体方向上的 RMSE 及总平移 RMSE 统计如表\ref{labelTabRMSE} 所示。
+各测试场景下，具体方向上的 RMSE 及总平移 RMSE 统计如表\ref{tab:rmse} 所示。
 
 \begin{table*}[htbp]
 \centering
 \captionnamefont{\xiaowuhao\bf }
 \captiontitlefont{\xiaowuhao\bf }
-\bicaption[labelTabRMSE]{表}{不同场景下防抖算法的平移均方根误差 (RMSE)}{Table}{Translation RMSE of stabilization algorithm across different scenarios}
+\bicaption[tab:rmse]{表}{不同场景下防抖算法的平移均方根误差 (RMSE)}{Table}{Translation RMSE of stabilization algorithm across different scenarios}
 \renewcommand\tabcolsep{0.5em}
 \begin{tabular}{cccc}
 \toprule
@@ -205,7 +205,7 @@ L &= \gamma \sqrt{dx^2 + dy^2} \\
 \end{tabular}
 \end{table*}
 
-表\ref{labelTabRMSE} 的数据证实：
+表\ref{tab:rmse} 的数据证实：
 1) 面对短促且平滑度要求较高的\textbf{画面剧烈抖动}场景，算法展现出了极高的追踪与稳定精度，总 RMSE 仅为 9.81 像素，位列三组实验之最。
 2) 在最严苛的\textbf{骑行颠簸}场景下（Y轴震荡最为剧烈），因其超出仿射变换能够完美建模的极限深度变化范畴，误差略高（36.51 像素），但相比于原始抖动，主观上仍实现了画面可用性的质的飞跃。
 3) \textbf{手持步行}场景取得了 19.22 像素的均衡 RMSE，证明该算法对于日常消费级设备的防抖具备良好的泛化能力。
