@@ -6,14 +6,14 @@ function run_vlfeat_stabilization()
     
     % 2. 输入输出设置
     % 使用项目自带数据，这里假设有 data/test_videos/ 目录
-    videoPath = fullfile('..', 'data', 'test_videos', 'synth_quick_panning.mp4');
+    videoPath = fullfile('..', 'data', 'test_videos', 'synth_handheld_walking.mp4');
     if ~exist(videoPath, 'file')
         % 如果没有样本视频，尝试从项目根目录或者提供一个警告
         warning('未找到测试视频 %s, 请指定有效的视频路径。', videoPath);
         return;
     end
     
-    outputPath = fullfile('..', 'data', 'results', 'vlfeat_quick_panning_stabilized.mp4');
+    outputPath = fullfile('..', 'data', 'results', 'vlfeat_handheld_stabilized.mp4');
     videoObj = VideoReader(videoPath);
     
     disp('=== 开始基于 VLFeat 的视频防抖流水线 ===');

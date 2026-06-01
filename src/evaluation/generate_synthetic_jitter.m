@@ -58,15 +58,24 @@ function T_groundtruth = generate_synthetic_jitter(inputFile, outputFile, params
             Theta = 0.02 * sin(2 * pi * (stepFreq/2) * t) + 0.005 * randn(1, N);
             
         case 'quick_panning'
-            % 中间某段大范围平移
+            % 模拟快速扫视时的抖动。
+            % 注意：如果原始视频本身已经是平滑的扫视镜头，这里不应该再强行加入宏观的大范围平移，
+            % 否则会导致画面移出画布产生黑边。
+            % 因此，这里我们只在扫视期间（0.3~0.6段）注入较强烈的水平急促晃动和随机手抖。
             startPan = floor(N * 0.3);
             endPan = floor(N * 0.6);
-            panSpeedX = 10;
-            Tx(startPan:endPan) = (1:(endPan-startPan+1)) * panSpeedX;
-            Tx(endPan+1:end) = Tx(endPan);
-            Tx = Tx + 3 * randn(1, N); % 叠加少许手抖
-            Ty = 3 * randn(1, N);
-            Theta = 0.005 * randn(1, N);
+            
+            % 基础轻微手抖
+            Tx = 2 * randn(1, N);
+            Ty = 2 * randn(1, N);
+            Theta = 0.002 * randn(1, N);
+            
+            % 在“扫视”发生的这一段，注入剧烈的手抖（模拟甩镜头时的不稳）
+            panDuration = endPan - startPan + 1;
+            t_pan = (1:panDuration) / fps;
+            Tx(startPan:endPan) = Tx(startPan:endPan) + 15 * sin(2 * pi * 4 * t_pan); % 4Hz 的水平急促晃动
+            Ty(startPan:endPan) = Ty(startPan:endPan) + 8 * randn(1, panDuration);
+            Theta(startPan:endPan) = Theta(startPan:endPan) + 0.01 * randn(1, panDuration);
             
         case 'bumpy_riding'
             % 高频高振幅噪声
