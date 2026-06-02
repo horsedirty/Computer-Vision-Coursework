@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1126" height="511" viewBox="0 0 1126 511">
+  <rect x="0" y="0" width="1126" height="511" fill="#fafbfc"/>
+  
+  <!-- Title -->
+  <text x="563" y="55" text-anchor="middle" font-size="18" font-weight="bold" fill="#333" font-family="Helvetica">视频稳像算法流程 — 基于 SIFT + 维纳滤波</text>
+
+  <!-- Phase 1 Container -->
+  <rect x="148" y="100" width="260" height="200" rx="15" fill="#eef4fb" stroke="#6c8ebf" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="158" y="122" font-size="13" font-weight="bold" fill="#333" font-family="Helvetica">阶段一：鲁棒运动估计</text>
+  <text x="158" y="138" font-size="10" fill="#888" font-family="Helvetica">vl_motion_estimation.m</text>
+
+  <!-- Phase 2 Container -->
+  <rect x="422" y="100" width="260" height="200" rx="15" fill="#edf7ed" stroke="#82b366" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="432" y="122" font-size="13" font-weight="bold" fill="#333" font-family="Helvetica">阶段二：参数分解与运动平滑</text>
+  <text x="432" y="138" font-size="10" fill="#888" font-family="Helvetica">vl_motion_smoothing.m</text>
+
+  <!-- Phase 3 Container -->
+  <rect x="696" y="100" width="280" height="200" rx="15" fill="#fef7ef" stroke="#d79b00" stroke-width="1.5" stroke-dasharray="8 4"/>
+  <text x="706" y="122" font-size="13" font-weight="bold" fill="#333" font-family="Helvetica">阶段三：画面增强与非盲去卷积</text>
+  <text x="706" y="138" font-size="10" fill="#888" font-family="Helvetica">vl_frame_synthesis.m, vl_wiener_deblur.m</text>
+
+  <!-- Node 1: 视频输入 -->
+  <ellipse cx="80" cy="200" rx="55" ry="30" fill="#d5e8d4" stroke="#82b366" stroke-width="2"/>
+  <text x="80" y="205" text-anchor="middle" font-size="14" fill="#333" font-family="Helvetica">视频输入</text>
+
+  <!-- Node 2: SIFT+RANSAC -->
+  <rect x="165" y="155" width="220" height="90" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="2"/>
+  <text x="275" y="190" text-anchor="middle" font-size="14" font-weight="bold" fill="#333" font-family="Helvetica">SIFT + RANSAC</text>
+  <text x="275" y="210" text-anchor="middle" font-size="11" fill="#555" font-family="Helvetica">提取帧间变换矩阵</text>
+
+  <!-- Arrow 1→2 -->
+  <defs><marker id="arrow1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#333"/></marker></defs>
+  <line x1="135" y1="200" x2="160" y2="200" stroke="#333" stroke-width="2" marker-end="url(#arrow1)"/>
+
+  <!-- Node 3: 6自由度参数分解 -->
+  <rect x="440" y="155" width="220" height="90" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="2"/>
+  <text x="550" y="190" text-anchor="middle" font-size="14" font-weight="bold" fill="#333" font-family="Helvetica">6自由度参数分解</text>
+  <text x="550" y="210" text-anchor="middle" font-size="11" fill="#555" font-family="Helvetica">平移 / 旋转 / 缩放 高斯平滑</text>
+
+  <!-- Arrow 2→3 -->
+  <line x1="385" y1="200" x2="435" y2="200" stroke="#333" stroke-width="2" marker-end="url(#arrow1)"/>
+
+  <!-- Node 4: 物理运动推导模糊核 -->
+  <rect x="715" y="155" width="240" height="90" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="2"/>
+  <text x="835" y="190" text-anchor="middle" font-size="14" font-weight="bold" fill="#333" font-family="Helvetica">物理运动推导模糊核</text>
+  <text x="835" y="210" text-anchor="middle" font-size="11" fill="#555" font-family="Helvetica">+ 维纳滤波非盲去卷积</text>
+
+  <!-- Arrow 3→4 -->
+  <line x1="660" y1="200" x2="710" y2="200" stroke="#333" stroke-width="2" marker-end="url(#arrow1)"/>
+
+  <!-- Node 5: 稳定视频输出 -->
+  <ellipse cx="1020" cy="200" rx="55" ry="30" fill="#d5e8d4" stroke="#82b366" stroke-width="2"/>
+  <text x="1020" y="205" text-anchor="middle" font-size="14" fill="#333" font-family="Helvetica">稳定视频输出</text>
+
+  <!-- Arrow 4→5 -->
+  <line x1="955" y1="200" x2="960" y2="200" stroke="#333" stroke-width="2" marker-end="url(#arrow1)"/>
+</svg>
