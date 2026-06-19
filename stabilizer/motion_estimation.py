@@ -30,14 +30,15 @@ class MotionDiagnostics:
 
 # goodFeaturesToTrack 参数（多取点，给 RANSAC 更充分的样本）
 _FEATURE_PARAMS = dict(maxCorners=800, qualityLevel=0.01, minDistance=12, blockSize=3)
-# 金字塔 LK 光流参数
+# 金字塔 LK 光流参数（较大窗口对真实视频的大幅度平移/快速摇摄更鲁棒）
 _LK_PARAMS = dict(
-    winSize=(21, 21),
+    winSize=(31, 31),
     maxLevel=3,
     criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 30, 0.01),
 )
 # 前向-后向校验阈值（处理分辨率下的像素），超过即认为跟踪不可靠
-_FB_THRESH = 1.0
+# 取 3.0：快速摇摄时合法跟踪点的回跳误差天然偏大，过严(如 1.0)会误删好点
+_FB_THRESH = 3.0
 
 
 def _decompose_similarity(m: np.ndarray) -> tuple[float, float, float, float]:

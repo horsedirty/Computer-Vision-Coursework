@@ -11,6 +11,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 import time
 
@@ -31,7 +32,8 @@ def _bar(prefix):
 
 
 def run(input_path, output_path, smooth="gaussian", radius=30,
-        proc_scale=0.5, zoom=None, min_crop=0.0, sharpen=True, do_eval=False):
+        proc_scale=0.5, zoom=None, crop_limit=1.10, sharpen=True,
+        do_eval=False, compare=False):
     print(f"=== 视频防抖流水线 ===\n输入: {input_path}")
     t_all = time.perf_counter()
 
@@ -48,15 +50,22 @@ def run(input_path, output_path, smooth="gaussian", radius=30,
     smoothed, _ = smooth_trajectory(transforms, method=smooth, radius=radius)
     print(f"  耗时 {(time.perf_counter()-t1)*1000:.0f} ms")
 
+    compare_path = None
+    if compare:
+        root, ext = os.path.splitext(output_path)
+        compare_path = f"{root}_compare{ext}"
+
     print("阶段三：帧合成与导出...")
     diag_syn = synthesize(input_path, smoothed, output_path,
-                          zoom=zoom, min_crop=min_crop, sharpen=sharpen,
-                          progress=_bar("synthesize"))
+                          zoom=zoom, crop_limit=crop_limit, sharpen=sharpen,
+                          compare_path=compare_path, progress=_bar("synthesize"))
     print(f"  耗时 {diag_syn['total_time_ms']:.0f} ms, "
           f"自适应放大 {diag_syn['zoom']:.3f}x (裁掉边缘 {(1-1/diag_syn['zoom'])*50:.1f}%)")
 
     total_ms = (time.perf_counter() - t_all) * 1000
     print(f"=== 完成，总耗时 {total_ms:.0f} ms ===\n输出: {output_path}")
+    if compare_path:
+        print(f"对比视频: {compare_path}")
 
     if do_eval:
         from metrics import stabilization_ratio
@@ -75,14 +84,16 @@ def main():
     ap.add_argument("--smooth", choices=["gaussian", "l1"], default="gaussian")
     ap.add_argument("--radius", type=int, default=30, help="高斯平滑半径(帧)")
     ap.add_argument("--proc-scale", type=float, default=0.5, help="运动估计处理分辨率比例")
-    ap.add_argument("--zoom", type=float, default=None, help="固定放大倍数(默认自适应)")
-    ap.add_argument("--min-crop", type=float, default=0.0, help="自适应模式下的最小裁剪比例")
+    ap.add_argument("--zoom", type=float, default=None, help="固定放大倍数(默认自适应，不超过 crop-limit)")
+    ap.add_argument("--crop-limit", type=float, default=1.10,
+                    help="裁剪预算/最大放大倍数，越小越贴近原画(默认1.10≈每边4.5%%)")
     ap.add_argument("--no-sharpen", action="store_true")
     ap.add_argument("--eval", action="store_true", help="处理后计算有效防抖时长占比")
+    ap.add_argument("--compare", action="store_true", help="额外输出 [原始|去抖] 并排对比视频")
     args = ap.parse_args()
     run(args.input, args.output, smooth=args.smooth, radius=args.radius,
-        proc_scale=args.proc_scale, zoom=args.zoom, min_crop=args.min_crop,
-        sharpen=not args.no_sharpen, do_eval=args.eval)
+        proc_scale=args.proc_scale, zoom=args.zoom, crop_limit=args.crop_limit,
+        sharpen=not args.no_sharpen, do_eval=args.eval, compare=args.compare)
 
 
 if __name__ == "__main__":

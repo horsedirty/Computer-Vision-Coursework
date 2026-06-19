@@ -14,34 +14,84 @@ import cv2
 import numpy as np
 
 
-def _frame_min_zoom(W: np.ndarray, w: int, h: int) -> float:
-    """单帧：算出让输出矩形 4 角都落在原始画面内所需的最小中心放大倍数。"""
+def _frame_min_zoom(W: np.ndarray, w: int, h: int, zmax: float = 4.0) -> float:
+    """单帧：算出让输出矩形 4 角都落回原始画面内所需的最小中心放大倍数。
+
+    直接对 zoom 做二分搜索 + 实际坐标覆盖检测，鲁棒(不依赖解析式，避免
+    平移过大、中心映射到画外等边界情形下的估计错误)。
+    """
+    if W.shape == (2, 3):
+        W = np.vstack([W, [0, 0, 1]])
     cx, cy = w / 2.0, h / 2.0
-    A = W[:, :2]                      # 2x2 线性部分
-    p0 = W @ np.array([cx, cy, 1.0])  # 输出中心映射回原图的位置(近似在画面内)
-    t_feasible = 1.0
-    for xx, yy in ((0, 0), (w, 0), (w, h), (0, h)):
-        d = A @ np.array([xx - cx, yy - cy])
-        # 输出角 c 缩放为 center + (c-center)*t (t=1/zoom)，映射回原图 s = p0 + t*d
-        # 求最大 t 使 s 仍在 [0,w]x[0,h] 内
-        t_lim = 1.0
-        for comp, hi in ((0, w), (1, h)):
-            pc, dc = p0[comp], d[comp]
-            if dc > 1e-9:
-                t_lim = min(t_lim, (hi - pc) / dc)
-            elif dc < -1e-9:
-                t_lim = min(t_lim, (0.0 - pc) / dc)
-        t_feasible = min(t_feasible, max(t_lim, 1e-3))
-    return 1.0 / t_feasible
+
+    def covered(z):
+        for sx, sy in ((-1, -1), (1, -1), (1, 1), (-1, 1)):
+            x = cx + sx * (w / 2.0) / z
+            y = cy + sy * (h / 2.0) / z
+            s = W @ np.array([x, y, 1.0])
+            if not (0.0 <= s[0] <= w and 0.0 <= s[1] <= h):
+                return False
+        return True
+
+    if covered(1.0):
+        return 1.0
+    lo, hi = 1.0, zmax
+    for _ in range(30):
+        mid = (lo + hi) / 2.0
+        if covered(mid):
+            hi = mid
+        else:
+            lo = mid
+    return hi
+
+
+def _warp_decompose(W):
+    """2x3 warp -> (dx, dy, da, ds_log)。"""
+    return (W[0, 2], W[1, 2], np.arctan2(W[1, 0], W[0, 0]),
+            np.log(max(np.hypot(W[0, 0], W[1, 0]), 1e-6)))
+
+
+def _warp_compose(p):
+    """(dx, dy, da, ds_log) -> 2x3 warp。"""
+    dx, dy, da, ds = p
+    s = np.exp(ds)
+    c, sn = np.cos(da) * s, np.sin(da) * s
+    return np.array([[c, -sn, dx], [sn, c, dy]], dtype=np.float64)
+
+
+def damp_warps(warps: np.ndarray, w: int, h: int, max_zoom: float) -> np.ndarray:
+    """把每帧矫正量限制在裁剪预算内：若某帧矫正过大(需 zoom>max_zoom 才能藏黑边)，
+    就按比例把该帧的矫正向"不矫正"收缩，直到刚好落入预算。
+
+    效果：快速摇摄等大幅运动时少矫正一点(那本就是主动运动)，换取
+    全程固定小裁剪、画面贴近原视频、且【永不出现黑边】。
+    """
+    out = np.empty_like(warps)
+    for i in range(len(warps)):
+        p = np.array(_warp_decompose(warps[i]))
+        if _frame_min_zoom(np.vstack([warps[i], [0, 0, 1]]), w, h) <= max_zoom:
+            out[i] = warps[i]
+            continue
+        lo, hi = 0.0, 1.0  # 二分搜索最大可保留的矫正比例 alpha
+        for _ in range(24):
+            mid = (lo + hi) / 2
+            Wm = _warp_compose(p * mid)
+            if _frame_min_zoom(np.vstack([Wm, [0, 0, 1]]), w, h) <= max_zoom:
+                lo = mid
+            else:
+                hi = mid
+        out[i] = _warp_compose(p * lo)
+    return out
 
 
 def compute_auto_zoom(warps: np.ndarray, w: int, h: int,
-                      percentile: float = 98.0, cap: float = 1.30,
+                      percentile: float = 100.0, cap: float = 1.30,
                       floor: float = 1.02) -> float:
-    """全局自适应放大倍数：取各帧所需 zoom 的高分位数，clamp 到 [floor, cap]。
+    """全局自适应放大倍数：取各帧所需 zoom 的(高)分位数，clamp 到 [floor, cap]。
 
-    用分位数而非最大值，避免个别极端抖动帧把整段视频都过度放大；
-    那几帧可能露出极轻微边缘，但整体画面保留更多、更清晰。
+    默认 percentile=100，即覆盖所有帧 —— 保证没有任何一帧露出黑边/镜像边缘
+    (肉眼对边缘伪影非常敏感)。cap 防止个别病态帧把整段过度放大；超过 cap 的
+    极少数帧用纯黑填充(干净，不像镜像那样诡异)。
     """
     zs = np.array([_frame_min_zoom(np.vstack([warps[i], [0, 0, 1]]), w, h)
                    for i in range(len(warps))])
@@ -49,10 +99,27 @@ def compute_auto_zoom(warps: np.ndarray, w: int, h: int,
     return float(np.clip(z, floor, cap))
 
 
+def _open_writer(path: str, fps: float, size: tuple[int, int]) -> cv2.VideoWriter:
+    """优先用 H.264(avc1)，兼容性最好(IDE/浏览器/各播放器都能开)；失败回退 mp4v。"""
+    w = cv2.VideoWriter(path, cv2.VideoWriter_fourcc(*"avc1"), fps, size)
+    if not w.isOpened():
+        w = cv2.VideoWriter(path, cv2.VideoWriter_fourcc(*"mp4v"), fps, size)
+    if not w.isOpened():
+        raise IOError(f"无法创建输出视频: {path}")
+    return w
+
+
+def _label(img, text):
+    """在画面左上角加白字黑边标签(仅 ASCII，cv2 不支持中文)。"""
+    cv2.putText(img, text, (12, 34), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 0), 5, cv2.LINE_AA)
+    cv2.putText(img, text, (12, 34), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 255, 255), 2, cv2.LINE_AA)
+    return img
+
+
 def synthesize(video_path: str, warps: np.ndarray, output_path: str,
-               zoom: float | None = None, min_crop: float = 0.0,
+               zoom: float | None = None, crop_limit: float = 1.10,
                sharpen: bool = True, sharpen_amount: float = 0.6,
-               progress=None) -> dict:
+               compare_path: str | None = None, progress=None) -> dict:
     """应用逐帧矫正矩阵生成稳定视频。
 
     Args:
@@ -60,9 +127,11 @@ def synthesize(video_path: str, warps: np.ndarray, output_path: str,
         warps:      (N,2,3) 每帧 dst->src 矫正矩阵。
         output_path: 输出 mp4 路径。
         zoom:       中心放大倍数。None 表示自适应自动计算。
-        min_crop:   自适应模式下的最小裁剪比例(转成最小 zoom 下限)。
+        crop_limit: 裁剪预算(最大放大倍数)。矫正量会被限制在此预算内，
+                    保证全程小裁剪、画面贴近原视频、永不出现黑边。1.10≈每边裁4.5%。
         sharpen:    是否做 USM 锐化补偿插值损失。
         sharpen_amount: 锐化强度(0.6 较柔和，避免塑料感)。
+        compare_path: 若给定，额外输出 [原始 | 去抖] 左右并排对比视频。
         progress:   可选进度回调 progress(i, n)。
     """
     cap_v = cv2.VideoCapture(video_path)
@@ -75,16 +144,19 @@ def synthesize(video_path: str, warps: np.ndarray, output_path: str,
     n = len(warps)
     cx, cy = w / 2.0, h / 2.0
 
+    # 把矫正量限制在裁剪预算内，保证小裁剪、贴近原画、无黑边。
+    # 阻尼到略紧的预算(留 2% 余量)，再施加实际放大，确保边界不残留黑边像素。
+    HEADROOM = 1.02
+    warps = damp_warps(warps, w, h, crop_limit / HEADROOM)
     if zoom is None:
-        zoom = compute_auto_zoom(warps, w, h, floor=max(1.02, 1.0 + 2.0 * min_crop))
+        # 阻尼后所有帧都落入预算，自适应取实际最大需求并加余量(仍不超过 crop_limit)
+        zoom = compute_auto_zoom(warps, w, h, cap=crop_limit / HEADROOM, floor=1.02) * HEADROOM
     Zs = np.array([[1.0 / zoom, 0, cx * (1 - 1.0 / zoom)],
                    [0, 1.0 / zoom, cy * (1 - 1.0 / zoom)],
                    [0, 0, 1]], dtype=np.float64)
 
-    writer = cv2.VideoWriter(output_path, cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
-    if not writer.isOpened():
-        cap_v.release()
-        raise IOError(f"无法创建输出视频: {output_path}")
+    writer = _open_writer(output_path, fps, (w, h))
+    cmp_writer = _open_writer(compare_path, fps, (2 * w + 4, h)) if compare_path else None
 
     t0 = time.perf_counter()
     for i in range(n):
@@ -93,17 +165,27 @@ def synthesize(video_path: str, warps: np.ndarray, output_path: str,
             break
         W = np.vstack([warps[i], [0, 0, 1]])
         M = (W @ Zs)[:2]  # 先 zoom-in，再 W 采样回原图
+        # 黑色填充：自适应 zoom 已覆盖绝大多数帧，残留极少数边缘用纯黑(干净)而非镜像(诡异)
         stabilized = cv2.warpAffine(frame, M, (w, h),
                                     flags=cv2.INTER_CUBIC,
-                                    borderMode=cv2.BORDER_REFLECT101)
+                                    borderMode=cv2.BORDER_CONSTANT, borderValue=0)
         if sharpen:
             blur = cv2.GaussianBlur(stabilized, (0, 0), 1.5)
             stabilized = cv2.addWeighted(stabilized, 1 + sharpen_amount,
                                          blur, -sharpen_amount, 0)
         writer.write(stabilized)
+
+        if cmp_writer is not None:
+            divider = np.full((h, 4, 3), 80, np.uint8)  # 中间灰色分隔条
+            side = np.hstack([_label(frame.copy(), "Original"),
+                              divider, _label(stabilized.copy(), "Stabilized")])
+            cmp_writer.write(side)
+
         if progress is not None:
             progress(i, n)
 
     cap_v.release()
     writer.release()
+    if cmp_writer is not None:
+        cmp_writer.release()
     return {"total_time_ms": (time.perf_counter() - t0) * 1000.0, "zoom": zoom}

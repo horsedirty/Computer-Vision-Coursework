@@ -28,6 +28,9 @@ python stabilize.py input.mp4 -o output.mp4
 # L1 最优路径 + 自评有效防抖占比
 python stabilize.py input.mp4 -o output.mp4 --smooth l1 --eval
 
+# 输出 [原始|去抖] 并排对比视频(便于肉眼评判)，生成 output_compare.mp4
+python stabilize.py input.mp4 -o output.mp4 --compare
+
 # 常用参数
 #   --proc-scale 0.5   运动估计处理分辨率（越小越快，1080P 建议 0.5）
 #   --radius 30        高斯平滑半径（越大越稳、越牺牲主动运动跟随）
