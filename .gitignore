@@ -20,8 +20,11 @@ data/results/*.mat
 data/results/*.csv
 data/evaluation_results
 HeartBeat/
-vlfeat_stabilization/vlfeat-0.9.21
-vlfeat_stabilization/vlfeat-0.9.21-bin.tar.gz
+
+# Python
+.venv/
+__pycache__/
+*.pyc
 
 # IDE
 .vscode/
