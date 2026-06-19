@@ -124,5 +124,6 @@ def smooth_trajectory(transforms: np.ndarray, method: str = "gaussian",
         W = S @ np.linalg.inv(A[i])
         warps[i] = W[:2]
 
-    diag = {"raw_trajectory": traj, "smoothed_trajectory": smooth}
+    diag = {"raw_trajectory": traj, "smoothed_trajectory": smooth,
+            "abs_transforms": A}  # 绝对轨迹 A_i，供时域补边算邻帧采样矩阵
     return warps, diag

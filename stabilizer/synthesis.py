@@ -13,6 +13,8 @@ import time
 import cv2
 import numpy as np
 
+from border_fill import fill_frame
+
 
 def _frame_min_zoom(W: np.ndarray, w: int, h: int, zmax: float = 4.0) -> float:
     """单帧：算出让输出矩形 4 角都落回原始画面内所需的最小中心放大倍数。
@@ -116,23 +118,61 @@ def _label(img, text):
     return img
 
 
+class _FrameWindow:
+    """顺序读取视频并缓存一个滑动窗口的帧，供时域补边随机访问邻帧。
+
+    只支持随 i 递增的近邻访问([i-radius, i+radius])：前读到 i+radius、
+    丢弃 < i-radius，内存占用 O(2·radius) 帧。
+    """
+
+    def __init__(self, cap: cv2.VideoCapture, n: int):
+        self.cap, self.n = cap, n
+        self.cache: dict[int, np.ndarray | None] = {}
+        self.next_read = 0
+
+    def get(self, k: int):
+        if k < 0 or k >= self.n:
+            return None
+        while self.next_read <= k:
+            ok, fr = self.cap.read()
+            self.cache[self.next_read] = fr if ok else None
+            self.next_read += 1
+        return self.cache.get(k)
+
+    def evict_below(self, lo: int):
+        for key in [kk for kk in self.cache if kk < lo]:
+            del self.cache[key]
+
+
+def _apply_sharpen(img, amount):
+    blur = cv2.GaussianBlur(img, (0, 0), 1.5)
+    return cv2.addWeighted(img, 1 + amount, blur, -amount, 0)
+
+
 def synthesize(video_path: str, warps: np.ndarray, output_path: str,
                zoom: float | None = None, crop_limit: float = 1.10,
                sharpen: bool = True, sharpen_amount: float = 0.6,
-               compare_path: str | None = None, progress=None) -> dict:
+               compare_path: str | None = None, progress=None,
+               border_mode: str = "crop", abs_transforms: np.ndarray | None = None,
+               fill_window: int = 20, fill_feather: int = 8) -> dict:
     """应用逐帧矫正矩阵生成稳定视频。
 
     Args:
         video_path: 输入视频。
         warps:      (N,2,3) 每帧 dst->src 矫正矩阵。
         output_path: 输出 mp4 路径。
-        zoom:       中心放大倍数。None 表示自适应自动计算。
+        zoom:       中心放大倍数。None 表示自适应自动计算（仅 crop 模式）。
         crop_limit: 裁剪预算(最大放大倍数)。矫正量会被限制在此预算内，
                     保证全程小裁剪、画面贴近原视频、永不出现黑边。1.10≈每边裁4.5%。
         sharpen:    是否做 USM 锐化补偿插值损失。
         sharpen_amount: 锐化强度(0.6 较柔和，避免塑料感)。
         compare_path: 若给定，额外输出 [原始 | 去抖] 左右并排对比视频。
         progress:   可选进度回调 progress(i, n)。
+        border_mode: "crop"(默认,中心裁剪缩放藏黑边) | "inpaint"(全幅,
+                     用相邻帧像素 warp 过来填补黑边,不裁剪不损失视野/分辨率)。
+        abs_transforms: (N,3,3) 绝对轨迹 A_i，border_mode="inpaint" 时必需。
+        fill_window: 补边时向前/后各取多少帧作为像素来源。
+        fill_feather: 补边接缝羽化半径(像素)。
     """
     cap_v = cv2.VideoCapture(video_path)
     if not cap_v.isOpened():
@@ -144,6 +184,43 @@ def synthesize(video_path: str, warps: np.ndarray, output_path: str,
     n = len(warps)
     cx, cy = w / 2.0, h / 2.0
 
+    writer = _open_writer(output_path, fps, (w, h))
+    cmp_writer = _open_writer(compare_path, fps, (2 * w + 4, h)) if compare_path else None
+    divider = np.full((h, 4, 3), 80, np.uint8)  # 对比视频中间灰色分隔条
+    t0 = time.perf_counter()
+
+    if border_mode == "inpaint":
+        if abs_transforms is None:
+            raise ValueError("border_mode='inpaint' 需要传入 abs_transforms (绝对轨迹 A)")
+        win = _FrameWindow(cap_v, n)
+        hole_ratios = []
+        for i in range(n):
+            orig = win.get(i)  # 触发顺序读取，缓存窗口内邻帧
+            if orig is None:
+                break
+            win.get(min(n - 1, i + fill_window))  # 预读到右窗口
+            win.evict_below(i - fill_window)
+            stabilized, hole = fill_frame(i, win.get, warps, abs_transforms, w, h,
+                                          window=fill_window, feather=fill_feather)
+            hole_ratios.append(hole)
+            if sharpen:
+                stabilized = _apply_sharpen(stabilized, sharpen_amount)
+            writer.write(stabilized)
+            if cmp_writer is not None:
+                side = np.hstack([_label(orig.copy(), "Original"),
+                                  divider, _label(stabilized.copy(), "Stabilized")])
+                cmp_writer.write(side)
+            if progress is not None:
+                progress(i, n)
+        cap_v.release(); writer.release()
+        if cmp_writer is not None:
+            cmp_writer.release()
+        return {"total_time_ms": (time.perf_counter() - t0) * 1000.0, "zoom": 1.0,
+                "mode": "inpaint",
+                "mean_hole_ratio": float(np.mean(hole_ratios)) if hole_ratios else 0.0,
+                "max_hole_ratio": float(np.max(hole_ratios)) if hole_ratios else 0.0}
+
+    # ---- crop 模式（默认）：中心裁剪缩放藏黑边 ----
     # 把矫正量限制在裁剪预算内，保证小裁剪、贴近原画、无黑边。
     # 阻尼到略紧的预算(留 2% 余量)，再施加实际放大，确保边界不残留黑边像素。
     HEADROOM = 1.02
@@ -155,10 +232,6 @@ def synthesize(video_path: str, warps: np.ndarray, output_path: str,
                    [0, 1.0 / zoom, cy * (1 - 1.0 / zoom)],
                    [0, 0, 1]], dtype=np.float64)
 
-    writer = _open_writer(output_path, fps, (w, h))
-    cmp_writer = _open_writer(compare_path, fps, (2 * w + 4, h)) if compare_path else None
-
-    t0 = time.perf_counter()
     for i in range(n):
         ok, frame = cap_v.read()
         if not ok:
@@ -170,13 +243,10 @@ def synthesize(video_path: str, warps: np.ndarray, output_path: str,
                                     flags=cv2.INTER_CUBIC,
                                     borderMode=cv2.BORDER_CONSTANT, borderValue=0)
         if sharpen:
-            blur = cv2.GaussianBlur(stabilized, (0, 0), 1.5)
-            stabilized = cv2.addWeighted(stabilized, 1 + sharpen_amount,
-                                         blur, -sharpen_amount, 0)
+            stabilized = _apply_sharpen(stabilized, sharpen_amount)
         writer.write(stabilized)
 
         if cmp_writer is not None:
-            divider = np.full((h, 4, 3), 80, np.uint8)  # 中间灰色分隔条
             side = np.hstack([_label(frame.copy(), "Original"),
                               divider, _label(stabilized.copy(), "Stabilized")])
             cmp_writer.write(side)

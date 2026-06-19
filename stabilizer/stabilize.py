@@ -33,7 +33,8 @@ def _bar(prefix):
 
 def run(input_path, output_path, smooth="gaussian", radius=30,
         proc_scale=0.5, zoom=None, crop_limit=1.10, sharpen=True,
-        do_eval=False, compare=False):
+        do_eval=False, compare=False, border_mode="crop",
+        fill_window=20, fill_feather=8):
     print(f"=== 视频防抖流水线 ===\n输入: {input_path}")
     t_all = time.perf_counter()
 
@@ -47,7 +48,7 @@ def run(input_path, output_path, smooth="gaussian", radius=30,
 
     print(f"阶段二：运动平滑 ({smooth})...")
     t1 = time.perf_counter()
-    smoothed, _ = smooth_trajectory(transforms, method=smooth, radius=radius)
+    smoothed, diag_sm = smooth_trajectory(transforms, method=smooth, radius=radius)
     print(f"  耗时 {(time.perf_counter()-t1)*1000:.0f} ms")
 
     compare_path = None
@@ -55,12 +56,20 @@ def run(input_path, output_path, smooth="gaussian", radius=30,
         root, ext = os.path.splitext(output_path)
         compare_path = f"{root}_compare{ext}"
 
-    print("阶段三：帧合成与导出...")
+    print(f"阶段三：帧合成与导出 (补边模式: {border_mode})...")
     diag_syn = synthesize(input_path, smoothed, output_path,
                           zoom=zoom, crop_limit=crop_limit, sharpen=sharpen,
-                          compare_path=compare_path, progress=_bar("synthesize"))
-    print(f"  耗时 {diag_syn['total_time_ms']:.0f} ms, "
-          f"自适应放大 {diag_syn['zoom']:.3f}x (裁掉边缘 {(1-1/diag_syn['zoom'])*50:.1f}%)")
+                          compare_path=compare_path, progress=_bar("synthesize"),
+                          border_mode=border_mode,
+                          abs_transforms=diag_sm["abs_transforms"],
+                          fill_window=fill_window, fill_feather=fill_feather)
+    if diag_syn.get("mode") == "inpaint":
+        print(f"  耗时 {diag_syn['total_time_ms']:.0f} ms, 全幅补边(无裁剪), "
+              f"残留空洞 平均 {diag_syn['mean_hole_ratio']*100:.3f}% / "
+              f"最大 {diag_syn['max_hole_ratio']*100:.3f}%")
+    else:
+        print(f"  耗时 {diag_syn['total_time_ms']:.0f} ms, "
+              f"自适应放大 {diag_syn['zoom']:.3f}x (裁掉边缘 {(1-1/diag_syn['zoom'])*50:.1f}%)")
 
     total_ms = (time.perf_counter() - t_all) * 1000
     print(f"=== 完成，总耗时 {total_ms:.0f} ms ===\n输出: {output_path}")
@@ -88,12 +97,20 @@ def main():
     ap.add_argument("--crop-limit", type=float, default=1.10,
                     help="裁剪预算/最大放大倍数，越小越贴近原画(默认1.10≈每边4.5%%)")
     ap.add_argument("--no-sharpen", action="store_true")
+    ap.add_argument("--border", choices=["crop", "inpaint"], default="crop",
+                    help="黑边处理：crop=中心裁剪缩放(默认) | inpaint=全幅时域补边(不裁剪)")
+    ap.add_argument("--fill-window", type=int, default=20,
+                    help="inpaint 补边时前后取多少帧作为像素来源")
+    ap.add_argument("--fill-feather", type=int, default=8,
+                    help="inpaint 补边接缝羽化半径(像素)")
     ap.add_argument("--eval", action="store_true", help="处理后计算有效防抖时长占比")
     ap.add_argument("--compare", action="store_true", help="额外输出 [原始|去抖] 并排对比视频")
     args = ap.parse_args()
     run(args.input, args.output, smooth=args.smooth, radius=args.radius,
         proc_scale=args.proc_scale, zoom=args.zoom, crop_limit=args.crop_limit,
-        sharpen=not args.no_sharpen, do_eval=args.eval, compare=args.compare)
+        sharpen=not args.no_sharpen, do_eval=args.eval, compare=args.compare,
+        border_mode=args.border, fill_window=args.fill_window,
+        fill_feather=args.fill_feather)
 
 
 if __name__ == "__main__":
