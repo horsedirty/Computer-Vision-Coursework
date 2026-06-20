@@ -2,7 +2,7 @@ PWD /Users/maziang/Documents/计算机视觉/结课作业/docs/航空学报latex
 INPUT /usr/local/texlive/2026/texmf.cnf
 INPUT /usr/local/texlive/2026/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2026/texmf-var/web2c/xetex/xelatex.fmt
-INPUT /Users/maziang/Documents/计算机视觉/结课作业/docs/航空学报latex模版/AAAS/FinalPaper.tex
+INPUT FinalPaper.tex
 OUTPUT FinalPaper.log
 INPUT ./aaas.cls
 INPUT aaas.cls
@@ -285,6 +285,8 @@ INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/tools/longtable.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/tools/longtable.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/makecell/makecell.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/makecell/makecell.sty
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/multirow/multirow.sty
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/multirow/multirow.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/dashrule/dashrule.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/dashrule/dashrule.sty
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/ifmtarg/ifmtarg.sty
@@ -468,6 +470,9 @@ INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/newtx/ntxexa.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/newtx/ntxexa.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/newtx/ntxexa.tfm
 OUTPUT FinalPaper.xdv
+INPUT ./image/pipeline_flow.png
+INPUT ./image/pipeline_flow.png
+INPUT ./image/pipeline_flow.png
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmr6.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmr5.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/newtx/ntxmi.tfm

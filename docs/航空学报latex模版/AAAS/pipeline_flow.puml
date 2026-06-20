@@ -1,0 +1,30 @@
+@startuml pipeline_flow
+skinparam defaultFontName "Heiti SC"
+skinparam dpi 200
+skinparam shadowing false
+skinparam ranksep 28
+skinparam nodesep 22
+skinparam ArrowColor #2c3e50
+skinparam ArrowFontColor #555555
+skinparam rectangle {
+  BorderColor #2c3e50
+  BackgroundColor #ecf3fb
+  FontSize 14
+}
+left to right direction
+
+rectangle "输入\n视频序列" as IN #fef6e7
+
+rectangle "**阶段一  鲁棒运动估计**\n(KLT 光流 + 相似变换)\n====\n• 降采样 (proc_scale=0.5)\n• Shi-Tomasi 角点检测\n• 金字塔 KLT 光流跟踪\n• 前向-后向一致性校验\n• RANSAC 拟合 4-DoF 相似变换\n• 回退: 沿用上帧运动" as S1
+
+rectangle "**阶段二  参数分解与平滑**\n(分离主动运动与抖动)\n====\n• 矩阵连乘累积绝对轨迹 A_t\n• 分解 (x, y, θ, ln s) + 角度解缠\n• 零相移高斯 / L1 最优路径平滑\n• 矫正矩阵 W_t = S_t · A_t⁻¹" as S2
+
+rectangle "**阶段三  帧合成与增强**\n(去黑边 + 锐化)\n====\n• 自适应裁剪 / 全幅时域补边\n• warpAffine 三次插值重映射\n• USM 锐化补偿插值损失\n• H.264 编码输出" as S3
+
+rectangle "稳定视频\n+ 评测指标\n(RMSE / 有效防抖占比)" as OUT #e9f7ef
+
+IN --> S1
+S1 --> S2 : 逐帧相对运动\n(dx,dy,dθ,d ln s)
+S2 --> S3 : 逐帧矫正矩阵 W_t
+S3 --> OUT
+@enduml

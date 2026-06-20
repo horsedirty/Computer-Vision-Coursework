@@ -1,38 +1,64 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{bradski2000}
+Gary Bradski.
+\newblock The opencv library.
+\newblock {\em Dr. Dobb's Journal of Software Tools}, 2000.
+
+\bibitem{shitomasi1994}
+Jianbo Shi and Carlo Tomasi.
+\newblock Good features to track.
+\newblock In {\em Proceedings of IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, pages 593--600, 1994.
+
+\bibitem{lucas1981}
+Bruce~D. Lucas and Takeo Kanade.
+\newblock An iterative image registration technique with an application to
+  stereo vision.
+\newblock In {\em Proceedings of the 7th International Joint Conference on
+  Artificial Intelligence (IJCAI)}, pages 674--679, 1981.
+
+\bibitem{bouguet2001}
+Jean-Yves Bouguet.
+\newblock Pyramidal implementation of the affine lucas kanade feature tracker:
+  description of the algorithm.
+\newblock {\em Intel Corporation, Microprocessor Research Labs}, 5(1-10):4,
+  2001.
+
+\bibitem{kalal2010}
+Zdenek Kalal, Krystian Mikolajczyk, and Jiri Matas.
+\newblock Forward-backward error: Automatic detection of tracking failures.
+\newblock In {\em Proceedings of the 20th International Conference on Pattern
+  Recognition (ICPR)}, pages 2756--2759. IEEE, 2010.
+
+\bibitem{ransac1981}
+Martin~A. Fischler and Robert~C. Bolles.
+\newblock Random sample consensus: a paradigm for model fitting with
+  applications to image analysis and automated cartography.
+\newblock {\em Communications of the ACM}, 24(6):381--395, 1981.
+
+\bibitem{grundmann2011}
+Matthias Grundmann, Vivek Kwatra, and Irfan Essa.
+\newblock Auto-directed video stabilization with robust l1 optimal camera
+  paths.
+\newblock In {\em Proceedings of IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, pages 225--232. IEEE, 2011.
+
+\bibitem{matsushita2006}
+Yasuyuki Matsushita, Eyal Ofek, Weina Ge, Xiaoou Tang, and Heung-Yeung Shum.
+\newblock Full-frame video stabilization with motion inpainting.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  28(7):1150--1163, 2006.
 
 \bibitem{lightstab2026}
 J.~Smith et~al.
 \newblock Lightstab: Unsupervised online video stabilization.
-\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, 2026.
-
-\bibitem{ransac1981}
-Martin~A. Fischler and Robert~C. Bolles.
-\newblock Random sample consensus: a paradigm for model fitting with applications to image analysis and automated cartography.
-\newblock {\em Communications of the ACM}, 24(6):381--395, 1981.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition (CVPR)}, 2026.
 
 \bibitem{mdpi2025}
 L.~Wang et~al.
 \newblock End-to-end online video stitching and stabilization.
-\newblock {\em MDPI}, 2025.
-
-\bibitem{sift2004}
-David~G. Lowe.
-\newblock Distinctive image features from scale-invariant keypoints.
-\newblock {\em International journal of computer vision}, 60(2):91--110, 2004.
-
-\bibitem{gopro2017}
-Seungjun Nah, Tae Hyun~Kim, and Kyoung Mu~Lee.
-\newblock Deep multi-scale convolutional neural network for dynamic scene deblurring.
-\newblock In {\em Proceedings of the IEEE conference on computer vision and pattern recognition}, pages 3883--3891, 2017.
-
-\bibitem{wiener1949}
-Norbert Wiener.
-\newblock {\em Extrapolation, Interpolation, and Smoothing of Stationary Time Series}.
-\newblock MIT press, 1949.
-
-\bibitem{cvpr2021}
-Maitreya Suin and A.~N. Rajagopalan.
-\newblock Gated spatio-temporal attention for video deblurring.
-\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, 2021.
+\newblock {\em MDPI Sensors}, 2025.
 
 \end{thebibliography}

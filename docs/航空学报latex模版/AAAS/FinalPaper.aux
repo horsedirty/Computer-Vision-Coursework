@@ -1,37 +1,55 @@
 \relax 
-\citation{lightstab2026}
+\citation{bradski2000}
+\citation{shitomasi1994}
+\citation{lucas1981,bouguet2001}
+\citation{kalal2010}
 \citation{ransac1981}
-\citation{mdpi2025}
-\citation{sift2004}
-\citation{lightstab2026}
-\citation{gopro2017}
+\citation{grundmann2011}
+\citation{matsushita2006}
+\citation{lightstab2026,mdpi2025}
+\citation{bradski2000}
+\citation{lucas1981,bouguet2001}
 \@writefile{toc}{\contentsline {section}{\numberline {1}引言}{1}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2}基于 VLFeat 的运动估计}{2}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}SIFT 尺度不变特征提取}{2}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}特征匹配与 RANSAC 鲁棒拟合}{2}{}\protected@file@percent }
-\citation{wiener1949,cvpr2021}
-\@writefile{toc}{\contentsline {section}{\numberline {3}防抖流水线与画面增强}{3}{}\protected@file@percent }
+\citation{shitomasi1994}
+\citation{lucas1981,bouguet2001}
+\citation{kalal2010}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces 图}}{2}{}\protected@file@percent }
+\newlabel{fig:pipeline}{{1}{2}{}{figure.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}基于 KLT 光流的鲁棒运动估计}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}降采样特征检测与金字塔 KLT 跟踪}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}前向-后向一致性校验}{2}{}\protected@file@percent }
+\citation{ransac1981}
+\citation{grundmann2011}
+\citation{matsushita2006}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}RANSAC 相似变换拟合与回退机制}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}运动平滑、帧合成与画面增强}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}轨迹绝对化与参数分解平滑}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}基于运动残差先验的非盲去卷积}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4}实验验证与结果分析}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}测试数据集与评估指标}{3}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces 图}}{4}{}\protected@file@percent }
-\newlabel{fig:handheld}{{1}{4}{}{figure.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces 表}}{4}{}\protected@file@percent }
-\newlabel{tab:rmse}{{1}{4}{}{table.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}自适应裁剪与全幅时域运动补边}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}锐化增强与输出}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}实验验证与结果分析}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}测试数据集与评估指标}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2}轨迹可视化与量化分析}{4}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces 图}}{5}{}\protected@file@percent }
-\newlabel{fig:bumpy}{{2}{5}{}{figure.2}{}}
+\newlabel{fig:handheld}{{2}{5}{}{figure.2}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces 图}}{5}{}\protected@file@percent }
-\newlabel{fig:panning}{{3}{5}{}{figure.3}{}}
+\newlabel{fig:bumpy}{{3}{5}{}{figure.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces 图}}{5}{}\protected@file@percent }
+\newlabel{fig:panning}{{4}{5}{}{figure.4}{}}
 \bibstyle{unsrt}
 \bibdata{ref}
-\bibcite{lightstab2026}{1}
-\bibcite{ransac1981}{2}
-\bibcite{mdpi2025}{3}
-\bibcite{sift2004}{4}
-\bibcite{gopro2017}{5}
-\bibcite{wiener1949}{6}
-\bibcite{cvpr2021}{7}
+\bibcite{bradski2000}{1}
+\bibcite{shitomasi1994}{2}
+\bibcite{lucas1981}{3}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces 表}}{6}{}\protected@file@percent }
+\newlabel{tab:rmse}{{1}{6}{}{table.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces 表}}{6}{}\protected@file@percent }
+\newlabel{tab:ratio}{{2}{6}{}{table.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}结\hskip 1em\relax 论}{6}{}\protected@file@percent }
-\gdef \@abspage@last{6}
+\bibcite{bouguet2001}{4}
+\bibcite{kalal2010}{5}
+\bibcite{ransac1981}{6}
+\bibcite{grundmann2011}{7}
+\bibcite{matsushita2006}{8}
+\bibcite{lightstab2026}{9}
+\bibcite{mdpi2025}{10}
+\gdef \@abspage@last{7}

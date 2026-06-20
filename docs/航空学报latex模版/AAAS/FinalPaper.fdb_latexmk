@@ -1,20 +1,19 @@
 # Fdb version 4
-["bibtex FinalPaper"] 1780321745.3819 "FinalPaper.aux" "FinalPaper.bbl" "FinalPaper" 1780321747.18106 0
-  "./ref.bib" 1780319590.27394 1725 cef17e9ae2d9133db27a1777e404f2f0 ""
+["bibtex FinalPaper"] 1781943783.11042 "FinalPaper.aux" "FinalPaper.bbl" "FinalPaper" 1781943785.18138 0
+  "./ref.bib" 1781943248.26627 3022 75df67570dc22516d74c05c837c784ce ""
   "/usr/local/texlive/2026/texmf-dist/bibtex/bst/base/unsrt.bst" 1292289607 18030 1376b4b231b50c66211e47e42eda2875 ""
-  "FinalPaper.aux" 1780321746.17368 2312 1e6c25ca8b62d63ee5b01e92338cca63 "xelatex"
+  "FinalPaper.aux" 1781943784.00521 3217 a398022fd89c45dbba7e6c47cabb0265 "xelatex"
   (generated)
   "FinalPaper.bbl"
   "FinalPaper.blg"
   (rewritten before read)
-["xdvipdfmx"] 1780321746.36881 "FinalPaper.xdv" "FinalPaper.pdf" "FinalPaper" 1780321747.1825 0
-  "FinalPaper.xdv" 1780321746.17419 120984 0db4e27f4ec7b55dd3c7bf4856f3f735 "xelatex"
+["xdvipdfmx"] 1781943784.2314 "FinalPaper.xdv" "FinalPaper.pdf" "FinalPaper" 1781943785.18286 0
+  "FinalPaper.xdv" 1781943784.00574 158428 ece9940d42556818f9ee6ee08eea365d "xelatex"
   (generated)
   "FinalPaper.pdf"
   (rewritten before read)
-["xelatex"] 1780321745.45811 "/Users/maziang/Documents/计算机视觉/结课作业/docs/航空学报latex模版/AAAS/FinalPaper.tex" "FinalPaper.xdv" "FinalPaper" 1780321747.18113 0
-  "/System/Library/Fonts/Menlo.ttc" 1777577597 2156036 ec05dfca6821d85440da0899493002c3 ""
-  "/Users/maziang/Documents/计算机视觉/结课作业/docs/航空学报latex模版/AAAS/FinalPaper.tex" 1780321706.61216 19993 7df176bc905e1a9a3f40f6cf2fb652af ""
+["xelatex"] 1781943783.19428 "FinalPaper.tex" "FinalPaper.xdv" "FinalPaper" 1781943785.18148 0
+  "/System/Library/Fonts/Menlo.ttc" 1779353822 2156036 ec05dfca6821d85440da0899493002c3 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1136768653 1408 5937f58aa508ea2cea4901c07d10f5fe ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
@@ -179,6 +178,7 @@
   "/usr/local/texlive/2026/texmf-dist/tex/latex/lettrine/lettrine.cfg" 1764191891 1377 1572f06fa6bf6d8e0a1cc9d612d9b60a ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/lettrine/lettrine.sty" 1765226693 12409 2337d8b212fa9553db1946c781bb33ff ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/makecell/makecell.sty" 1249334690 15773 2dd7dde1ec1c2a3d0c85bc3b273e04d8 ""
+  "/usr/local/texlive/2026/texmf-dist/tex/latex/multirow/multirow.sty" 1731446765 6696 886c9f3087d0b973ed2c19aa79cb3023 ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/newtx/lmsntxsy.fd" 1634244313 1140 ee5963b0c88b5c4f92fed61a27034b79 ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/newtx/lmxntxexx.fd" 1471383769 549 70a2497c311fc8b19acb02f7607eb4e9 ""
   "/usr/local/texlive/2026/texmf-dist/tex/latex/newtx/newtxmath.sty" 1727126309 141084 0a94ecd3ff47caf25c908eb85183555f ""
@@ -229,14 +229,15 @@
   "/usr/local/texlive/2026/texmf-dist/web2c/texmf.cnf" 1770478701 43630 e9fa012910491fe5ae08a72c3c2997a7 ""
   "/usr/local/texlive/2026/texmf-var/web2c/xetex/xelatex.fmt" 1774321809 5948569 2bc820c839716a047e2b2047681118b2 ""
   "/usr/local/texlive/2026/texmf.cnf" 1772409725 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "FinalPaper.aux" 1780321746.17368 2312 1e6c25ca8b62d63ee5b01e92338cca63 "xelatex"
-  "FinalPaper.bbl" 1780321745.45576 1489 f3bde1461728f32cf013c17e85f6ef86 "bibtex FinalPaper"
-  "FinalPaper.tex" 1780321706.61216 19993 7df176bc905e1a9a3f40f6cf2fb652af ""
+  "FinalPaper.aux" 1781943784.00521 3217 a398022fd89c45dbba7e6c47cabb0265 "xelatex"
+  "FinalPaper.bbl" 1781943783.1919 2361 273f58aa5c0181b1a7551b67d6d19da0 "bibtex FinalPaper"
+  "FinalPaper.tex" 1781943765.14458 25776 4a4ecdf95b3fccebc735865e1edde1c5 ""
   "aaas.cls" 1780319079.34725 11324 a40eddc703769316198ae02ee62ddfcf ""
   "cite.sty" 1780301503.10182 14119 101124fed797c2f4dc820c6da37d156a ""
-  "image/synth_bumpy_riding_trajectory_eval.png" 1780301830.68223 165761 33da8ee82d36598a4ff95c9a52dbe60a ""
-  "image/synth_handheld_walking_trajectory_eval.png" 1780301830.68294 150562 342d41cc7f35551824491633c3ea21b2 ""
-  "image/synth_quick_panning_trajectory_eval.png" 1780301830.68349 151635 437fa69e78f57d44ab95572724855d97 ""
+  "image/pipeline_flow.png" 1781943747.15385 164614 273049bb8f8f4bff89cb26604fd15843 ""
+  "image/synth_bumpy_riding_trajectory_eval.png" 1781942912.1438 293525 d0c5737e51fca4ad9dcf437d4060b0ef ""
+  "image/synth_handheld_walking_trajectory_eval.png" 1781942894.73179 228333 8a7fccb5b894e871882ebc258dc2ad95 ""
+  "image/synth_quick_panning_trajectory_eval.png" 1781942928.22769 218226 d9378044cb060e8d98c514fd32ea97f9 ""
   (generated)
   "FinalPaper.aux"
   "FinalPaper.log"
