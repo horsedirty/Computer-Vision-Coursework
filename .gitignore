@@ -18,8 +18,18 @@ data/results/*.mp4
 data/results/*.avi
 data/results/*.mat
 data/results/*.csv
+data/evaluation_results
 HeartBeat/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
 
 # IDE
 .vscode/
 .idea/
+
+# Video
+*.mp4
+*.avi

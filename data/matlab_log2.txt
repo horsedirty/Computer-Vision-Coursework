@@ -1,0 +1,106 @@
+﻿========================================
+  综合评估管道启动
+  输出目录: data/evaluation_results
+========================================
+
+[阶段1/5] 运行消融实验...
+========== 消融实验 ==========
+测试视频: data/test_videos/test1.mp4
+实验数量: 7
+
+--- 实验 1/7: 基线_SIFT_高斯_无去模糊 ---
+[Pipeline] 加载视频: data/test_videos/test1.mp4
+[Pipeline] 总帧数: 287, 处理帧数: 287, 帧率: 30.00 fps
+[Pipeline] 阶段一: 运动估计...
+  [警告] 实验失败: 位置 1 处的参数无效。 值必须为矩阵。
+
+--- 实验 2/7: 双检测器_SIFT+SURF_高斯_无去模糊 ---
+[Pipeline] 加载视频: data/test_videos/test1.mp4
+[Pipeline] 总帧数: 287, 处理帧数: 287, 帧率: 30.00 fps
+[Pipeline] 阶段一: 运动估计...
+  [警告] 实验失败: 位置 1 处的参数无效。 值必须为矩阵。
+
+--- 实验 3/7: SIFT_相对坐标高斯_无去模糊 ---
+[Pipeline] 加载视频: data/test_videos/test1.mp4
+[Pipeline] 总帧数: 287, 处理帧数: 287, 帧率: 30.00 fps
+[Pipeline] 阶段一: 运动估计...
+  [警告] 实验失败: 位置 1 处的参数无效。 值必须为矩阵。
+
+--- 实验 4/7: SIFT_马尔可夫_l=3_无去模糊 ---
+[Pipeline] 加载视频: data/test_videos/test1.mp4
+[Pipeline] 总帧数: 287, 处理帧数: 287, 帧率: 30.00 fps
+[Pipeline] 阶段一: 运动估计...
+  [警告] 实验失败: 位置 1 处的参数无效。 值必须为矩阵。
+
+--- 实验 5/7: SIFT_马尔可夫_l=3_维纳去模糊 ---
+[Pipeline] 加载视频: data/test_videos/test1.mp4
+[Pipeline] 总帧数: 287, 处理帧数: 287, 帧率: 30.00 fps
+[Pipeline] 阶段一: 运动估计...
+  [警告] 实验失败: 位置 1 处的参数无效。 值必须为矩阵。
+
+--- 实验 6/7: SIFT_马尔可夫_l=1_无去模糊 ---
+[Pipeline] 加载视频: data/test_videos/test1.mp4
+[Pipeline] 总帧数: 287, 处理帧数: 287, 帧率: 30.00 fps
+[Pipeline] 阶段一: 运动估计...
+  [警告] 实验失败: 位置 1 处的参数无效。 值必须为矩阵。
+
+--- 实验 7/7: SIFT_马尔可夫_l=5_无去模糊 ---
+[Pipeline] 加载视频: data/test_videos/test1.mp4
+[Pipeline] 总帧数: 287, 处理帧数: 287, 帧率: 30.00 fps
+[Pipeline] 阶段一: 运动估计...
+  [警告] 实验失败: 位置 1 处的参数无效。 值必须为矩阵。
+
+               Experiment                PSNR_dB    SSIM    SR     FPS    MotionEst_ms    Smoothing_ms    Synthesis_ms
+    _________________________________    _______    ____    ___    ___    ____________    ____________    ____________
+
+    {'基线_SIFT_高斯_无去模糊'         }      NaN      NaN     NaN    NaN         0               0               0      
+    {'双检测器_SIFT+SURF_高斯_无去模糊'}      NaN      NaN     NaN    NaN         0               0               0      
+    {'SIFT_相对坐标高斯_无去模糊'      }      NaN      NaN     NaN    NaN         0               0               0      
+    {'SIFT_马尔可夫_l=3_无去模糊'      }      NaN      NaN     NaN    NaN         0               0               0      
+    {'SIFT_马尔可夫_l=3_维纳去模糊'    }      NaN      NaN     NaN    NaN         0               0               0      
+    {'SIFT_马尔可夫_l=1_无去模糊'      }      NaN      NaN     NaN    NaN         0               0               0      
+    {'SIFT_马尔可夫_l=5_无去模糊'      }      NaN      NaN     NaN    NaN         0               0               0      
+
+
+结果已导出: data/results/test1_ablation.csv
+[阶段1/5] 消融实验完成
+
+[阶段2/5] 生成模块耗时饼图...
+[警告: 所选实验无有效耗时数据] 
+[> 位置：visualize_module_pie (第 43 行)
+位置: run_full_evaluation (第 94 行)] 
+[警告: 所选实验无有效耗时数据] 
+[> 位置：visualize_module_pie (第 43 行)
+位置: run_full_evaluation (第 94 行)] 
+[警告: 所选实验无有效耗时数据] 
+[> 位置：visualize_module_pie (第 43 行)
+位置: run_full_evaluation (第 94 行)] 
+[警告: 所选实验无有效耗时数据] 
+[> 位置：visualize_module_pie (第 43 行)
+位置: run_full_evaluation (第 94 行)] 
+[警告: 所选实验无有效耗时数据] 
+[> 位置：visualize_module_pie (第 43 行)
+位置: run_full_evaluation (第 94 行)] 
+[警告: 所选实验无有效耗时数据] 
+[> 位置：visualize_module_pie (第 43 行)
+位置: run_full_evaluation (第 94 行)] 
+[警告: 所选实验无有效耗时数据] 
+[> 位置：visualize_module_pie (第 43 行)
+位置: run_full_evaluation (第 94 行)] 
+[阶段2/5] 饼图生成完成 (7 张)
+
+[阶段3/5] 生成消融实验柱状图...
+[警告: 柱状图生成失败: 'destination' 的值无效。无法创建输出文件 'data\evaluation_results\ablation\ablation_bars.png'，No such file or directory。] 
+[> 位置：run_full_evaluation (第 120 行)] 
+[阶段4/5] 生成帧对比可视化...
+[阶段4/5] 稳定化视频 data\evaluation_results\ablation\test1_baseline_stabilized.mp4 不存在，跳过帧对比
+
+[阶段5/5] 运行失败案例分析...
+[阶段5/5] 诊断目录 data\evaluation_results\ablation 不存在，跳过失败案例分析
+
+生成评估报告...
+Markdown 报告已保存: data\evaluation_results\evaluation_report.md
+
+========================================
+  综合评估完成！报告: data\evaluation_results\evaluation_report.md
+========================================

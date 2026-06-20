@@ -1,0 +1,90 @@
+{错误: <a href="matlab: opentoline('F:\computer vision\test\Computer-Vision-Coursework\src\evaluation\run_full_evaluation.m',89,53)">文件: run_full_evaluation.m 行: 89 列: 53</a>
+文本字符无效。请检查不受支持的符号、不可见的字符或非 ASCII 字符的粘贴。
+} 
+
+========== 综合评估: test_video ==========
+[1/5] 跳过 PSNR/SSIM（无帧数据）
+[2/5] 跳过稳定比 SR（无变换矩阵数据）
+[3/5] 跳过运动轨迹可视化（无变换矩阵数据）
+[4/5] 跳过帧间对比图（无帧数据）
+[5/5] 计算模块耗时分布 ...
+
+========== 评估摘要: test_video ==========
+场景类型: unknown
+--- 帧间 PSNR/SSIM: 无数据 ---
+--- 稳定比 SR: 无数据 ---
+
+评估报告已保存至: data\results\test_video_evaluation_report.mat
+
+========== 评估完成 ==========
+
+ans = 
+
+  包含以下字段的 <a href="matlab:helpPopup('struct')" style="font-weight:bold">struct</a>:
+
+    video_name: 'test_video'
+    scene_type: 'unknown'
+          psnr: [1×1 struct]
+          ssim: [1×1 struct]
+            sr: [1×1 struct]
+        timing: [1×1 struct]
+     timestamp: 2026-05-26 17:16:42
+
+
+========== 综合评估: test_video ==========
+[1/5] 跳过 PSNR/SSIM（无帧数据）
+[2/5] 跳过稳定比 SR（无变换矩阵数据）
+[3/5] 跳过运动轨迹可视化（无变换矩阵数据）
+[4/5] 跳过帧间对比图（无帧数据）
+[5/5] 计算模块耗时分布 ...
+
+========== 评估摘要: test_video ==========
+场景类型: unknown
+--- 帧间 PSNR/SSIM: 无数据 ---
+--- 稳定比 SR: 无数据 ---
+
+评估报告已保存至: data\results\test_video_evaluation_report.mat
+
+========== 评估完成 ==========
+
+ans = 
+
+  包含以下字段的 <a href="matlab:helpPopup('struct')" style="font-weight:bold">struct</a>:
+
+    video_name: 'test_video'
+    scene_type: 'unknown'
+          psnr: [1×1 struct]
+          ssim: [1×1 struct]
+            sr: [1×1 struct]
+        timing: [1×1 struct]
+     timestamp: 2026-05-26 18:48:19
+
+
+========== 综合评估: test_video ==========
+[1/5] 跳过 PSNR/SSIM（无帧数据）
+[2/5] 跳过稳定比 SR（无变换矩阵数据）
+[3/5] 跳过运动轨迹可视化（无变换矩阵数据）
+[4/5] 跳过帧间对比图（无帧数据）
+[5/5] 计算模块耗时分布 ...
+
+========== 评估摘要: test_video ==========
+场景类型: unknown
+--- 帧间 PSNR/SSIM: 无数据 ---
+--- 稳定比 SR: 无数据 ---
+
+评估报告已保存至: data\results\test_video_evaluation_report.mat
+
+========== 评估完成 ==========
+
+ans = 
+
+  包含以下字段的 <a href="matlab:helpPopup('struct')" style="font-weight:bold">struct</a>:
+
+    video_name: 'test_video'
+    scene_type: 'unknown'
+          psnr: [1×1 struct]
+          ssim: [1×1 struct]
+            sr: [1×1 struct]
+        timing: [1×1 struct]
+     timestamp: 2026-05-26 19:53:09
+
