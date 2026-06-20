@@ -211,16 +211,17 @@ I_{out} = (1+\alpha)\,I - \alpha\, G_{\sigma}\!*\,I
 \captiontitlefont{\xiaowuhao\bf }
 \bicaption[tab:rmse]{表}{不同场景下运动估计的平移均方根误差 (RMSE)}{Table}{Translation RMSE of motion estimation across different scenarios}
 \renewcommand\tabcolsep{0.5em}
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{cccc}
 \toprule
-{测试场景} & {X轴RMSE (px)} & {Y轴RMSE (px)} & {总RMSE (px)} \\
+{测试场景} & \makecell{X 轴\\RMSE/px} & \makecell{Y 轴\\RMSE/px} & \makecell{总\\RMSE/px} \\
 \midrule
 画面剧烈抖动 & 9.78 & 7.92 & 12.59 \\
 手持步行 & 14.22 & 6.10 & 15.47 \\
 静止站立 & 11.26 & 15.10 & 18.83 \\
 骑行颠簸 & 44.18 & 20.38 & 48.66 \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 表\ref{tab:rmse} 的数据证实：
@@ -236,9 +237,10 @@ I_{out} = (1+\alpha)\,I - \alpha\, G_{\sigma}\!*\,I
 \captiontitlefont{\xiaowuhao\bf }
 \bicaption[tab:ratio]{表}{处理前后有效防抖时长占比与平均抖动（高斯/L1 平滑）}{Table}{Effective stabilization-time ratio and mean jitter before/after processing (Gaussian/L1)}
 \renewcommand\tabcolsep{0.35em}
+\resizebox{\columnwidth}{!}{%
 \begin{tabular}{ccccc}
 \toprule
-\multirow{2}{*}{测试场景} & \multicolumn{3}{c}{有效防抖占比 (\%)} & {抖动(px)} \\
+\multirow{2}{*}{测试场景} & \multicolumn{3}{c}{有效防抖占比 (\%)} & \makecell{抖动/px} \\
 \cmidrule(lr){2-4}\cmidrule(lr){5-5}
  & 原始 & 高斯 & L1 & 原始$\to$高斯 \\
 \midrule
@@ -247,7 +249,7 @@ I_{out} = (1+\alpha)\,I - \alpha\, G_{\sigma}\!*\,I
 静止站立 & 49.0 & 95.5 & \textbf{96.1} & 1.15$\to$0.41 \\
 骑行颠簸 & 0.0 & \textbf{1.8} & 0.9 & 67.80$\to$29.75 \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 由表\ref{tab:ratio} 可见：除极端的骑行颠簸工况外，算法将有效防抖时长占比从处理前的 0.6\%--49\% 大幅提升至 56\%--96\%，平均逐帧抖动由 7--9 像素降至约 1 像素，画面平稳性获得质的飞跃。两种平滑器各有所长：\textbf{零相移高斯}总体更稳健，尤其在抖动随机性强的手持步行场景显著优于 L1（57.6\% vs.\ 17.9\%），适合作为默认方法；\textbf{L1 最优路径}凭借分段恒速的路径约束，在含明显主动运镜的画面剧烈抖动与静止站立场景下略胜一筹，更利于保留摄影意图。骑行颠簸因运动幅度远超裁剪预算所能补偿的范围，两种方法均仅能部分改善，构成本文方法在 2D 模型下的能力边界。
