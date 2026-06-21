@@ -511,9 +511,15 @@ INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/newtx/ntxsyc.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/newtx/ntxexa.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/newtx/ntxexa.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/newtx/ntxexa.tfm
+INPUT ./image/klt_tracking_walking1.png
+INPUT ./image/klt_tracking_walking1.png
+INPUT ./image/klt_tracking_walking1.png
 INPUT ./image/synth_handheld_walking_trajectory_eval.png
 INPUT ./image/synth_handheld_walking_trajectory_eval.png
 INPUT ./image/synth_handheld_walking_trajectory_eval.png
+INPUT ./image/synth_handheld_walking_trajectory_l1.png
+INPUT ./image/synth_handheld_walking_trajectory_l1.png
+INPUT ./image/synth_handheld_walking_trajectory_l1.png
 INPUT ./image/synth_bumpy_riding_trajectory_eval.png
 INPUT ./image/synth_bumpy_riding_trajectory_eval.png
 INPUT ./image/synth_bumpy_riding_trajectory_eval.png

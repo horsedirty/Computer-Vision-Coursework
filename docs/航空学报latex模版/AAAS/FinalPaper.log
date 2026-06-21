@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.24)  20 JUN 2026 16:38
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.24)  20 JUN 2026 20:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1932,19 +1932,28 @@ Package fontspec Info:
 LaTeX Font Warning: Font shape `OT1/TimesNewRoman(0)/b/n' undefined
 (Font)              using `OT1/TimesNewRoman(0)/m/n' instead on input line 99.
 
-[2] [3]
+[2]
+File: ./image/klt_tracking_walking1.png Graphic file (type bmp)
+<./image/klt_tracking_walking1.png>
+ [3] [4]
 File: ./image/synth_handheld_walking_trajectory_eval.png Graphic file (type bmp
 )
 <./image/synth_handheld_walking_trajectory_eval.png>
+File: ./image/synth_handheld_walking_trajectory_l1.png Graphic file (type bmp)
+<./image/synth_handheld_walking_trajectory_l1.png>
 File: ./image/synth_bumpy_riding_trajectory_eval.png Graphic file (type bmp)
 <./image/synth_bumpy_riding_trajectory_eval.png>
 File: ./image/synth_quick_panning_trajectory_eval.png Graphic file (type bmp)
 <./image/synth_quick_panning_trajectory_eval.png>
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 2512) has occurred while \output is active []
 
- [4]
-[5] (./FinalPaper.bbl [6]) [7
+ [5]
+[6]
+Underfull \vbox (badness 2903) has occurred while \output is active []
+
+
+(./FinalPaper.bbl [7]) [8
 
 ] (./FinalPaper.aux)
  ***********
@@ -1961,12 +1970,12 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 30039 strings out of 468168
- 698636 string characters out of 5432815
- 1055755 words of memory out of 5000000
- 58145 multiletter control sequences out of 15000+600000
+ 30070 strings out of 468168
+ 700081 string characters out of 5432815
+ 1051799 words of memory out of 5000000
+ 58174 multiletter control sequences out of 15000+600000
  689392 words of font info for 281 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 107i,17n,128p,1236b,512s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 107i,17n,128p,1236b,510s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on FinalPaper.xdv (7 pages, 158580 bytes).
+Output written on FinalPaper.xdv (8 pages, 168404 bytes).

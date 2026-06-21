@@ -112,7 +112,13 @@ KLT 跟踪在遮挡、弱纹理或前景运动处会产生错误的对应。为�
 合法跟踪点的正反向轨迹应当闭合，而错误跟踪点的回跳误差通常很大，故该校验能高效滤除外点。考虑到快速摇摄时合法点的回跳误差也会偏大，阈值取相对宽松的 $\varepsilon=3$ 像素（处理分辨率下），以避免过严而误删有效点。
 
 \subsection{RANSAC 相似变换拟合与回退机制}
-经过校验的对应点集中仍可能混杂动态前景对象（如行人、车辆）造成的外点，若直接用最小二乘拟合将被严重带偏。因此本文采用随机抽样一致性（RANSAC）~\cite{ransac1981} 估计相似变换（\texttt{estimateAffinePartial2D}）。RANSAC 每次随机抽取最小子集计算候选模型 $T$，统计重投影误差小于阈值的内点数量，经多次迭代后输出内点支持最多的最优相似变换 $T_{raw}(t)$，从而仅依据静态背景估计摄像机运动。
+经过校验的对应点集中仍可能混杂动态前景对象（如行人、车辆）造成的外点，若直接用最小二乘拟合将被严重带偏。因此本文采用随机抽样一致性（RANSAC）~\cite{ransac1981} 估计相似变换（\texttt{estimateAffinePartial2D}）。RANSAC 每次随机抽取最小子集计算候选模型 $T$，统计重投影误差小于阈值的内点数量，经多次迭代后输出内点支持最多的最优相似变换 $T_{raw}(t)$，从而仅依据静态背景估计摄像机运动。图\ref{fig:klt} 在真实手持步行视频上直观展示了上述跟踪与校验机制：绿色为通过前向-后向校验且被 RANSAC 接纳的背景内点，其运动矢量一致地反映全局相机运动；红色为虽被可靠跟踪、但与背景相似变换模型不一致而被 RANSAC 判为外点的点，集中分布于画面中央独立行走的行人以及近景视差区域，被成功剔除而不污染相机运动估计。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.86\columnwidth]{./image/klt_tracking_walking1.png}
+\bicaption[fig:klt]{图}{\centering KLT 光流跟踪与外点剔除（真实手持步行视频）：绿=背景内点，红=被剔除的运动前景/视差点}{Fig.}{\centering KLT tracking and outlier rejection on a real handheld walking video: green = background inliers, red = rejected moving-foreground/parallax points}
+\end{figure}
 
 若当前帧有效跟踪点不足或拟合失败，系统触发回退（Fallback）机制。值得强调的是，本文并不将 $T_{raw}(t)$ 置为单位矩阵——那会在轨迹上引入突变，反而表现为一次人为抖动；而是\textbf{沿用上一帧的相对运动}（常速预测），使轨迹在偶发失败处保持平滑连续，更符合摄像机运动的物理惯性。
 
@@ -187,7 +193,13 @@ I_{out} = (1+\alpha)\,I - \alpha\, G_{\sigma}\!*\,I
 \end{figure*}
 
 \subsection{轨迹可视化与量化分析}
-将各场景下的累积绝对运动轨迹按 $X$、$Y$ 两个方向随帧序变化进行可视化，每幅图包含算法估计的原始轨迹（红线）、平滑后轨迹（蓝线）以及真值轨迹（绿色虚线）。图\ref{fig:handheld} 展示了最典型的手持步行场景。从图中可清晰地观察到两点：其一，红色的估计原始轨迹与绿色的真值虚线几乎完全重合，且二者都呈现大量锯齿状的高频抖动，这证明本文的 KLT 光流加相似变换估计能够准确还原真实的相机运动；其二，经参数分解与零相移高斯滤波后，蓝色平滑轨迹变得极为平缓，剔除了高频震荡的同时保留了相机平缓移动的低频意图，正是该平滑轨迹被用作防抖重映射的目标位姿。
+将各场景下的累积绝对运动轨迹按 $X$、$Y$ 两个方向随帧序变化进行可视化，每幅图包含算法估计的原始轨迹（红线）、平滑后轨迹（蓝线）以及真值轨迹（绿色虚线）。图\ref{fig:handheld} 展示了最典型的手持步行场景。从图中可清晰地观察到两点：其一，红色的估计原始轨迹与绿色的真值虚线几乎完全重合，且二者都呈现大量锯齿状的高频抖动，这证明本文的 KLT 光流加相似变换估计能够准确还原真实的相机运动；其二，经参数分解与零相移高斯滤波后，蓝色平滑轨迹变得极为平缓，剔除了高频震荡的同时保留了相机平缓移动的低频意图，正是该平滑轨迹被用作防抖重映射的目标位姿。作为对比，图\ref{fig:handheld_l1} 给出同一手持步行场景下改用 L1 最优相机路径平滑的结果：红色估计轨迹与绿色真值同样高度贴合，而蓝色平滑轨迹呈现出分段近似线性的形态——L1 范数的稀疏特性使其倾向于生成“静止—匀速—静止”式的分段运镜，相比高斯低通更锐利地划分主动运动段落，更利于保留有意的推拉摇移意图。
+
+\begin{figure*}[htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{./image/synth_handheld_walking_trajectory_l1.png}
+\bicaption[fig:handheld_l1]{图}{\centering 手持步行场景下 L1 最优相机路径平滑的轨迹对比}{Fig.}{\centering Trajectory comparison under L1 optimal camera-path smoothing in the handheld walking scenario}
+\end{figure*}
 
 \begin{figure*}[htbp]
 \centering

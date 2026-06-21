@@ -1,18 +1,18 @@
 # Fdb version 4
-["bibtex FinalPaper"] 1781943783.11042 "FinalPaper.aux" "FinalPaper.bbl" "FinalPaper" 1781944718.81348 0
+["bibtex FinalPaper"] 1781958661.25602 "FinalPaper.aux" "FinalPaper.bbl" "FinalPaper" 1781958664.72887 0
   "./ref.bib" 1781943248.26627 3022 75df67570dc22516d74c05c837c784ce ""
   "/usr/local/texlive/2026/texmf-dist/bibtex/bst/base/unsrt.bst" 1292289607 18030 1376b4b231b50c66211e47e42eda2875 ""
-  "FinalPaper.aux" 1781944717.70769 3217 a398022fd89c45dbba7e6c47cabb0265 "xelatex"
+  "FinalPaper.aux" 1781958662.02696 3519 62836a0cb766af5eb948b757be18d73c "xelatex"
   (generated)
   "FinalPaper.bbl"
   "FinalPaper.blg"
   (rewritten before read)
-["xdvipdfmx"] 1781944717.92305 "FinalPaper.xdv" "FinalPaper.pdf" "FinalPaper" 1781944718.81499 0
-  "FinalPaper.xdv" 1781944717.70822 158580 28a354826ef77561e82404285905585c "xelatex"
+["xdvipdfmx"] 1781958662.23769 "FinalPaper.xdv" "FinalPaper.pdf" "FinalPaper" 1781958664.73037 0
+  "FinalPaper.xdv" 1781958662.02746 168404 9afaf1aa3e811bba8859888d89c672ee "xelatex"
   (generated)
   "FinalPaper.pdf"
   (rewritten before read)
-["xelatex"] 1781944716.86899 "FinalPaper.tex" "FinalPaper.xdv" "FinalPaper" 1781944718.81355 0
+["xelatex"] 1781958661.33159 "FinalPaper.tex" "FinalPaper.xdv" "FinalPaper" 1781958664.72893 0
   "/System/Library/Fonts/Menlo.ttc" 1779353822 2156036 ec05dfca6821d85440da0899493002c3 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1136768653 1408 5937f58aa508ea2cea4901c07d10f5fe ""
@@ -229,14 +229,16 @@
   "/usr/local/texlive/2026/texmf-dist/web2c/texmf.cnf" 1770478701 43630 e9fa012910491fe5ae08a72c3c2997a7 ""
   "/usr/local/texlive/2026/texmf-var/web2c/xetex/xelatex.fmt" 1774321809 5948569 2bc820c839716a047e2b2047681118b2 ""
   "/usr/local/texlive/2026/texmf.cnf" 1772409725 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "FinalPaper.aux" 1781944717.70769 3217 a398022fd89c45dbba7e6c47cabb0265 "xelatex"
-  "FinalPaper.bbl" 1781943783.1919 2361 273f58aa5c0181b1a7551b67d6d19da0 "bibtex FinalPaper"
-  "FinalPaper.tex" 1781944579.79207 25875 451b3851b06b17dae6c90896591aa1f4 ""
+  "FinalPaper.aux" 1781958662.02696 3519 62836a0cb766af5eb948b757be18d73c "xelatex"
+  "FinalPaper.bbl" 1781958661.32939 2361 273f58aa5c0181b1a7551b67d6d19da0 "bibtex FinalPaper"
+  "FinalPaper.tex" 1781958620.49813 27555 f3792650a0aa296e6acfb0ec9d0b6adc ""
   "aaas.cls" 1780319079.34725 11324 a40eddc703769316198ae02ee62ddfcf ""
   "cite.sty" 1780301503.10182 14119 101124fed797c2f4dc820c6da37d156a ""
+  "image/klt_tracking_walking1.png" 1781958374.45902 1728238 281610c421fc0317c7bc6e0a671425ec ""
   "image/pipeline_flow.png" 1781943747.15385 164614 273049bb8f8f4bff89cb26604fd15843 ""
   "image/synth_bumpy_riding_trajectory_eval.png" 1781942912.1438 293525 d0c5737e51fca4ad9dcf437d4060b0ef ""
   "image/synth_handheld_walking_trajectory_eval.png" 1781942894.73179 228333 8a7fccb5b894e871882ebc258dc2ad95 ""
+  "image/synth_handheld_walking_trajectory_l1.png" 1781958376.31292 233512 4ea7d381726d24d10934afb9d31a952f ""
   "image/synth_quick_panning_trajectory_eval.png" 1781942928.22769 218226 d9378044cb060e8d98c514fd32ea97f9 ""
   (generated)
   "FinalPaper.aux"
